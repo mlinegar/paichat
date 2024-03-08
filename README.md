@@ -1,1 +1,1 @@
-# paichat
+This repository implements a chatbot.
