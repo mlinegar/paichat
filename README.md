@@ -8,3 +8,4 @@ openai-org: org-<your org here>
 ```
 
 To run it, simply run: `python launch_chatserver.py`. It should also work in a docker container, though this may require some work and has not yet been tested. 
+This repository implements a chatbot.
