@@ -32,6 +32,7 @@ path = Path(f"output/{user_id}.db")
 db = TinyDB(path, storage=CachingMiddleware(JSONStorage))
 #  table = db.table(user_id)
 
+<<<<<<< HEAD
 ### SET OPTIONS ###
 small_model_name = 'openai/gpt-3.5-turbo'
 large_model_name = 'openai/gpt-4-turbo'
@@ -73,6 +74,8 @@ system_prompt = f"You are a trained volunteer canvasser named Brook.\
  As such we should accept any response that is relevant to the question situation, even if it may be offensive to some.\
  Make sure to keep your responses brief and to the point. Break any long responses into multiple paragraphs."
 
+=======
+>>>>>>> 26acf8e (temp)
 
 def setup_logger(name, log_file, level=logging.INFO):
     """Function to setup as many loggers as you want"""
@@ -86,9 +89,12 @@ def setup_logger(name, log_file, level=logging.INFO):
 
     return logger
 
+<<<<<<< HEAD
 chat_logger = setup_logger('chat_logger', 'logging/' + user_id + '.log')
 
 
+=======
+>>>>>>> 26acf8e (temp)
 def log_messages(chat_logger, messages, level="info"):
     """
     Logs messages with specified logging level in a structured manner.
@@ -105,19 +111,30 @@ def log_messages(chat_logger, messages, level="info"):
         elif level == "error" : 
             chat_logger.error(formatted_message)
         # Add more logging levels here as needed.
+<<<<<<< HEAD
 
 
 @lmql.query(chunksize=32, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+=======
+            
+
+@lmql.query(chunksize=16)
+>>>>>>> 26acf8e (temp)
 async def yes_no():
     '''lmql
     "Respond only with one of: 'Yes.' or 'No.'."
     "A:[FLAG]" #where STOPS_AT(FLAG, '.') # FLAG in ['Yes.', 'No.'] and 
     return "yes" in FLAG.lower()
     '''
+<<<<<<< HEAD
         
 @lmql.query(chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+=======
+
+@lmql.query
+>>>>>>> 26acf8e (temp)
 async def chain_of_thought():
     '''lmql
     "What needs to happen?"
@@ -127,26 +144,41 @@ async def chain_of_thought():
         
 # takes in and returns text
 # used with @message to print text to the user without needing to invoke LLM
+<<<<<<< HEAD
 @lmql.query(chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+=======
+@lmql.query
+>>>>>>> 26acf8e (temp)
 async def print_text(text):
     '''lmql
     "{text}"
     '''
 
+<<<<<<< HEAD
 @lmql.query(chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def include(text):
     '''lmql
     #  "Your response must include the following text verbatim: {text}"
     "Your response should rephrase the following as a friendly question to the user: {text}"
+=======
+@lmql.query
+async def include(text):
+    '''lmql
+    "Your response must include the following text verbatim: {text}"
+>>>>>>> 26acf8e (temp)
     "[RESPONSE]"
     return RESPONSE
     '''
 
 # FIXME: this is clumsy, and requires each tool individually to be added
+<<<<<<< HEAD
 @lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+=======
+@lmql.query(model=lmql.model('openai/gpt-4'))
+>>>>>>> 26acf8e (temp)
 async def use_tool(tool_name):
     '''lmql
     if tool_name == "immigration_story":
@@ -161,18 +193,28 @@ async def use_tool(tool_name):
     return RESPONSE
     '''
 
+<<<<<<< HEAD
 @lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def ask_question(question_text, last_bot_response, user_response, verbatim, recalled_context="", max_length=256, tool_name=""):
     '''lmql
     "Reminder: the last thing you, the assistant, said was: {last_bot_response}"
+=======
+@lmql.query(model=lmql.model('openai/gpt-4'))
+async def ask_question(question_text, last_response, user_response, verbatim, recalled_context="", max_length=256, tool_name=""):
+    '''lmql
+    "Reminder: the last thing you, the assistant, said was: {last_response}"
+>>>>>>> 26acf8e (temp)
     if not user_response=="":
         "Reminder: the user said {user_response}."
     if not recalled_context=="":
         "Reminder: some information about the user: {recalled_context}."
     "Make sure to phrase what you say so that it feels like a natural response to what the user said."
+<<<<<<< HEAD
     "If the user asked any questions, make sure to answer them."
     "If the user addressed any points, make sure to address them."
+=======
+>>>>>>> 26acf8e (temp)
     "Make sure your entire response will make sense to the user."
     if verbatim and tool_name =="":
         "Ask the user:[QUESTION: include(question_text)]"
@@ -188,6 +230,7 @@ async def ask_question(question_text, last_bot_response, user_response, verbatim
     return QUESTION
     '''
 
+<<<<<<< HEAD
 @lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def did_user_answer(question_text, answer_text, prev_answer_text):
@@ -223,10 +266,18 @@ async def get_user_answer(question_text, answer_text, prev_answer_text):
 @lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def assistant_response_needed(question_text, answer_text, prev_answer_text):
+=======
+# option: switch from asking individual questions and stepping through
+# to having all of the questions
+# or: combine user answers for all questions in section into one response (ie is any of the info present)
+@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+async def analyze_question_answer(question_text, answer_text, prev_answer_text):
+>>>>>>> 26acf8e (temp)
     '''lmql
     "Question: {question_text}"
     "User answer: {answer_text}"
     "Reminder: the user may be responding from their phone, so their responses may be short or incomplete. You should accept most user responses that are even vaguely relevant to the question."
+<<<<<<< HEAD
     "We need to answer the following question:"
     "Is a response from the assistant needed before moving on to the next question?"
     "This will happen when the user's response is unclear, incomplete, or when the user asks for more information."
@@ -255,6 +306,48 @@ async def execute_response_analysis(question_text, answer_text, prev_answer_text
 
 @lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+=======
+    "There is a secret code: 'SKIP'. If the user says 'SKIP', then you should always accept this as a valid response."
+    "We need to answer the following questions:"
+    "1. Has the user answered the question, either in this response or a previous one?"
+    "2. If the user did answer the question, what was their answer?"
+    "3. If the user did answer the question, did they implicitly or explicitly ask for a follow up response? (e.g. 'I don't know', 'I need more information', 'I'm not sure', etc.)"
+    "4. If the user did not answer the question, what was the reason?"
+    "[COT: chain_of_thought]"
+    "1. Has the user answered the question?[ANSWERED: yes_no]"
+    if ANSWERED:
+        "2. What was the user's answer?[ANSWER]"
+        "3. Did the user ask for a follow up response?[FOLLOW_UP: yes_no]"
+        ERR = ""
+    else: 
+        ANSWER = ""
+        FOLLOW_UP = False
+        "4. What does the user need to do next time to answer the question?[ERR]"
+    return ANSWERED, ANSWER, FOLLOW_UP, ERR
+    '''
+
+# takes waaaaaay too long to run and too many tokens
+@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+async def what_next(question_context):
+    '''lmql
+    "Should we continue the current conversation or move on to the next question?"
+    "Context: {question_context}"
+    "We need to move through this survey quickly, but we also want the user to share their experiences and to show that we hear them."
+    #  "Does the assistant need to respond to the user's last message rather than ask the next question?"
+    #  "[COT: chain_of_thought]"
+    #  "[ASSISTANT_RESPONSE_NEEDED: yes_no]"
+    ASSISTANT_RESPONSE_NEEDED = True
+    if ASSISTANT_RESPONSE_NEEDED:
+        "Does the user seem engaged and wanting to continue this exact specific part of the conversation? (Assume no)"
+        "[COT2: chain_of_thought]"
+        "[USER_RESPONSE_NEEDED: yes_no]"
+    else:
+        USER_RESPONSE_NEEDED = False
+    return ASSISTANT_RESPONSE_NEEDED, USER_RESPONSE_NEEDED
+    '''
+    
+@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+>>>>>>> 26acf8e (temp)
 async def gen_flag(flag_text):
     '''lmql
     "{flag_text}"
@@ -262,6 +355,7 @@ async def gen_flag(flag_text):
     "[ANS: yes_no]"
     return ANS
     '''
+<<<<<<< HEAD
 
 @lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
@@ -282,6 +376,38 @@ async def question_followup(question, user_input, errors, tries, max_depth):
     return FOLLOW_UP
     '''
                 
+=======
+    
+def append_and_save(df, file_name):
+    df = pd.concat([df, pd.DataFrame({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : 0, 'question_text': question_text, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, index=[0])], ignore_index=True)
+    df.to_csv(file_name)
+    return df    
+    
+#  lmql.set_default_model('chatgpt')
+lmql.set_default_model('gpt-4')
+with open('immigration_script.json') as f:
+    script = json.load(f)
+
+
+    
+chat_logger = setup_logger('chat_logger', 'test_chatbot.log')
+
+#  for i, step in enumerate(script):
+#      print(f"Step Number: {step['step_num']}")
+#      print(f"Step Text: {step['step_text']}")
+#      print(f"Step Questions: {step['questions']}")
+    
+system_prompt = "You are a trained volunteer canvasser named Brook.\
+ Your goal is to have a conversation with the user to about workplace immigration raids by government agencies.\
+ To do so, you use patience, empathy, and fact. You do not judge the user. You do not tell them they are wrong for holding their opinion.\
+ You are not allowed to ask questions that are not in the script, other than asking the user to explain their position.\
+ Remember that we are trying to be non-judgmental and to elicit narratives from the user about their experiences.\
+ Remember that the user may be responding from their phone, so their responses may be short or incomplete.\
+ As such we should accept any response that is relevant to the question situation, even if it may be offensive to some."
+
+max_depth = 3
+
+>>>>>>> 26acf8e (temp)
 #  minimal working example (for debugging)
 #  argmax(chunksize=128)
 #  "{:system} {system_prompt}"
@@ -296,6 +422,7 @@ async def question_followup(question, user_input, errors, tries, max_depth):
 # this way can more explicitly guide the bot via programmatic script as well as system prompt
 # e.g. directly read in the script description from the replication materials as part of the system prompt
 
+<<<<<<< HEAD
 argmax(chunksize=300, verbose=verbose)
 "{:system} {system_prompt}"
 #  "{:assistant} {intro_text} [@message INTRO]"
@@ -304,6 +431,22 @@ last_bot_response = INTRO
 
 for i, step in enumerate(script):
    
+=======
+argmax(chunksize=128)
+"{:system} {system_prompt}"
+#  "{:assistant} {intro_text} [@message INTRO]"
+"{:assistant} Introduce yourself and then your topic to the user. Emphasize that you are here to learn about their experience. Do not ask the user any questions in this message.[@message INTRO]"
+last_response = INTRO
+# initialize empty data frame and overwrite old one
+file_name = "qdf_test.csv"
+qdf = pd.DataFrame()
+qdf.to_csv(file_name)
+
+for i, step in enumerate(script):
+    # DEBUG
+    #  if i < 2:
+        #  continue
+>>>>>>> 26acf8e (temp)
     step_num = step['step_num']
     step_check = f"Step Number: {step_num}"
     chat_logger.info(step_check)
@@ -317,6 +460,7 @@ for i, step in enumerate(script):
     step_responses = "" # replace this with recallable info? or use as a supplement separately? add to ask_question?
     recalled_context = ""
 
+<<<<<<< HEAD
     # add another system prompt here to guide the bot through the step
     step_prompt = f""
     #  "{:system} {step_text}"
@@ -325,6 +469,12 @@ for i, step in enumerate(script):
         tries = 0
         errors = 0
        
+=======
+    for qq, question in enumerate(questions):
+        tries = 0
+        errors = 0
+        
+>>>>>>> 26acf8e (temp)
         question_text = questions[qq]['question_text']
         if qq < len(questions) - 1:
             next_question_text = questions[qq+1]['question_text']
@@ -341,12 +491,17 @@ for i, step in enumerate(script):
         use_tool = question['use_tool']
         tool_name = question['tool_name']
         log_messages(chat_logger, {"Step Number" : step_num, "Step Text" : step_text, "Question Number" : qq, "Question Text" : question_text, "Requires User Answer" : requires_user_answer, "Allow Assistant Response" : allow_assistant_response, "Flag Required" : flag_required, "Step Flag" : step_flag, "Generate Flag" : generate_flag, "Recallable" : recallable, "Verbatim" : verbatim})
+<<<<<<< HEAD
        
+=======
+
+>>>>>>> 26acf8e (temp)
         # when exactly do we want to skip a question?
         # if the flag is required, and the flag is not set or is false
         if (not flag_required is None) and (not step_flag == flag_required):
             continue
 
+<<<<<<< HEAD
         QUESTION = await ask_question(question_text, last_bot_response, user_response, verbatim, recalled_context=recalled_context, max_length=max_length, tool_name = tool_name)    
         "{:assistant} [@message QUESTION_PRINT: print_text(QUESTION)]"
 
@@ -383,18 +538,44 @@ for i, step in enumerate(script):
                 "user_input": user_input
             })
 
+=======
+        QUESTION = await ask_question(question_text, last_response, user_response, verbatim, recalled_context=recalled_context, max_length=max_length, tool_name = tool_name)    
+        "{:assistant} [@message QUESTION_PRINT: print_text(QUESTION)]"
+        last_response = QUESTION
+        log_messages(chat_logger, {"Question" :  QUESTION})
+
+        continue_conversation = requires_user_answer
+        while continue_conversation and tries <= max_depth and errors <= max_depth:
+            user_input = await input()
+            step_responses = step_responses + "\n" + user_input
+            "{:user} {user_input}"    
+            # Log user input
+            log_messages(chat_logger, {"User Input": user_input}, level="info")
+>>>>>>> 26acf8e (temp)
             if user_input == "SKIP":
                 continue_conversation = False
                 QUESTION_ANSWERED = False
                 QUESTION_ANSWER = "SKIP"
+<<<<<<< HEAD
                 continue
             # Analyze user input using the asynchronous function
             QUESTION_ANSWERED, QUESTION_ANSWER, ASSISTANT_RESPONSE_NEEDED = await execute_response_analysis(question_text, user_input, step_responses)
+=======
+                #  qdf = qdf.append({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : 0, 'question_text': question_text, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, ignore_index=True)
+                qdf = pd.concat([qdf, pd.DataFrame({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : 0, 'question_text': question_text, 'recallable' : recallable, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, index=[0])], ignore_index=True)
+                qdf.to_csv(file_name)
+                #  qdf = append_and_save(qdf, file_name)
+                continue
+            
+            # analyze user input
+            QUESTION_ANSWERED, QUESTION_ANSWER, FOLLOW_UP, QA_REASON = await analyze_question_answer(question_text, user_input, step_responses)
+>>>>>>> 26acf8e (temp)
 
             # Log QA results
             log_messages(chat_logger,
                             {"QUESTION_ANSWERED" : QUESTION_ANSWERED,
                             "QUESTION_ANSWER" : QUESTION_ANSWER,
+<<<<<<< HEAD
                             #  "QUESTION_ANSWER_COT" : QUESTION_ANSWER_COT,
                             "ASSISTANT_RESPONSE_NEEDED" : ASSISTANT_RESPONSE_NEEDED})
 
@@ -417,12 +598,26 @@ for i, step in enumerate(script):
                 ### SAVE DATA ###
                 if recallable:
                     recalled_context = recalled_context + "\nQ:" + question_text + "\nA:" + QUESTION_ANSWER
+=======
+                            "FOLLOW_UP" : FOLLOW_UP,
+                            "QA_REASON" : QA_REASON})
+            
+            if QUESTION_ANSWERED:
+                ### SAVE DATA ###
+                #  qdf = qdf.append({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : tries, 'question_text': question_text, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, ignore_index=True)
+                qdf = pd.concat([qdf, pd.DataFrame({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : 0, 'question_text': question_text, 'recallable' : recallable, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, index=[0])], ignore_index=True)
+                qdf.to_csv(file_name)
+                if recallable:
+                    recalled_context = recalled_context + "\nQ:" + question_text + "\nA:" + QUESTION_ANSWER
+                #  qdf = append_and_save(qdf, file_name)
+>>>>>>> 26acf8e (temp)
 
                 ### GENERATE FLAG ###
                 if generate_flag:
                     flag_text = question['flag_text']
                     step_flag = await gen_flag(flag_text)
                     log_messages(chat_logger, {"Flag question" :  flag_text, "Step flag" :  step_flag})
+<<<<<<< HEAD
                     append_to_database(db,{
                         "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "step_num": step_num,
@@ -453,10 +648,38 @@ for i, step in enumerate(script):
                     continue_conversation = True
                 else:
                     continue_conversation = False
+=======
+                ### CHECK IF RESPONSE NEEDED ###
+                if allow_assistant_response or FOLLOW_UP:
+                    ASSISTANT_RESPONSE_NEEDED, USER_RESPONSE_NEEDED = await what_next("Current question: " + question_text + "\nNext question: " + next_question_text)
+                    log_messages(chat_logger,
+                        {"ASSISTANT_RESPONSE_NEEDED" : ASSISTANT_RESPONSE_NEEDED,
+                        "USER_RESPONSE_NEEDED" : USER_RESPONSE_NEEDED})
+                    # FIXME: add to being saved
+                    if ASSISTANT_RESPONSE_NEEDED:
+                        "{:assistant} Follow up message to the user: [@message QUESTION]"
+                        log_messages(chat_logger, {"FOLLOW_UP_RESPONSE" : QUESTION})
+                    if USER_RESPONSE_NEEDED:
+                        tries += 1
+                        continue_conversation = True
+                    else:
+                        continue_conversation = False
+                else:
+                    ASSISTANT_RESPONSE_NEEDED = False
+                    USER_RESPONSE_NEEDED = False
+                    continue_conversation = False
+                log_messages(chat_logger,
+                        {"ASSISTANT_RESPONSE_NEEDED" : ASSISTANT_RESPONSE_NEEDED,
+                        "USER_RESPONSE_NEEDED" : USER_RESPONSE_NEEDED,
+                        "FLAG_QUESTION" : question['flag_text'] if generate_flag else "N/A",
+                        "STEP_FLAG" : step_flag if generate_flag else "N/A",
+                        "continue_conversation" : continue_conversation})
+>>>>>>> 26acf8e (temp)
             else:
                 # If the question wasn't answered, log the reason and prepare for another attempt
                 errors += 1
                 qa_text = f'Error: I cannot accept this response as it does not answer the question. Please try again.\nAttempt {errors}/{max_depth}.\nError analysis:\n'
+<<<<<<< HEAD
 
                 QUESTION_FOLLOWUP = await question_followup(question_text, user_input, errors, tries, max_depth)    
                 "{:assistant} [@message QUESTION_FOLLOWUP_PRINT: print_text(QUESTION_FOLLOWUP)]"
@@ -476,3 +699,10 @@ for i, step in enumerate(script):
                     continue_conversation = False
                 else:
                     continue_conversation = True
+=======
+                "{:assistant} [@message ERROR: print_text(qa_text)]"
+                "{:assistant} [@message ERROR: print_text(QA_REASON)]"
+                log_messages(chat_logger, {"tries" : tries, "errors" : errors, "qa_text" : qa_text, "QA_REASON" :  QA_REASON}, level="error")
+                continue_conversation = True
+            
+>>>>>>> 26acf8e (temp)
