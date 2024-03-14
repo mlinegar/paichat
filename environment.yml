@@ -8,5 +8,4 @@ dependencies:
   - pandas
   - pip:
     - lmql
-    - asyncio
     - nest_asyncio
