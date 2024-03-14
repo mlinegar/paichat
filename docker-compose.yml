@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  paichat:
+    image: "paichat"
+    container_name: "paichat"
+    restart: always
+    hostname: "paichat"
+    ports:
+      - 12345:12345
