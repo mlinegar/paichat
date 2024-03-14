@@ -9,3 +9,4 @@ dependencies:
   - pip:
     - lmql
     - nest_asyncio
+    - asyncio
