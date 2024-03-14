@@ -3,3 +3,10 @@ channels:
   - conda-forge
   - defaults
 prefix: /Users/mlinegar/miniforge3/envs/.paichat
+dependencies:
+  - python=3.10
+  - pandas
+  - pip:
+    - lmql
+    - asyncio
+    - nest_asyncio
