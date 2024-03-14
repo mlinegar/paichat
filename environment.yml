@@ -1,0 +1,5 @@
+name: .paichat
+channels:
+  - conda-forge
+  - defaults
+prefix: /Users/mlinegar/miniforge3/envs/.paichat
