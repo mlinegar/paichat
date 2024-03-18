@@ -22,6 +22,7 @@ class MessageDecorator(lmql.decorators.LMQLDecorator):
     Provides an @message variable decorator in queries, allowing them
     to specify what output variables are shown to the user (streamed as chat messages).
     Replacing with: chat.output.MessageDecorator
+
     To be used in conjunction with a `lmql.lib.chat.ChatMessageOutputWriter` output writer.
     """
     def pre(self, variable, context):
