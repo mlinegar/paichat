@@ -2,9 +2,9 @@ version: "3"
 
 services:
   paichat:
-    image: "paichat"
-    container_name: "paichat"
+    image: "test-paichat"
+    container_name: "test-paichat"
     restart: always
-    hostname: "paichat"
+    hostname: "test-paichat"
     ports:
-      - 12345:12345
+      - 20111:18089
