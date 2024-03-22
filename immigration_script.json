@@ -1,5 +1,10 @@
 [
   {
+    "script_external_name": "script_A",
+    "script_internal_name": "immigration_script",
+    "script_description": "workplace immigration raids by government agencies"
+  },
+  {
     "step_num": 0,
     "step_text": "Introduction",
     "step_goal" : "Brief introduction.",

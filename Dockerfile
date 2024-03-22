@@ -4,27 +4,11 @@ FROM continuumio/miniconda3
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the Conda environment file
-COPY environment.yml /app/environment.yml
+# Copy a simple Python script into the container
+COPY test_server.py /app/test_server.py
 
-# Create the Conda environment
-RUN conda env create -f environment.yml
+# Make port 18089 available to the world outside this container
+EXPOSE 18089
 
-# Activate the environment
-SHELL ["conda", "run", "-n", ".paichat", "/bin/bash", "-c"]
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Install any needed packages specified in requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Make port 12345 available to the world outside this container
-EXPOSE 12345
-
-# Define environment variable
-ENV NAME World
-
-# Run lmql chat when the container launches
-# CMD ["conda", "run", "-n", ".paichat", "lmql", "chat", "chat.lmql"]
-CMD ["conda", "run", "-n", ".paichat", "python", "launch_chatserver.py"]
+# Command to run the test server
+CMD ["python", "test_server.py"]
