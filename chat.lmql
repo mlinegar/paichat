@@ -4,6 +4,7 @@ import json
 import asyncio
 import nest_asyncio
 nest_asyncio.apply()
+<<<<<<< HEAD
 import logging
 import pandas as pd
 import datetime
@@ -31,6 +32,32 @@ path = Path(f"output/{user_id}.db")
 #  db = TinyDB(path, access_mode="r+", storage=BetterJSONStorage)
 db = TinyDB(path, storage=CachingMiddleware(JSONStorage))
 #  table = db.table(user_id)
+=======
+import logging
+import pandas as pd
+import logging
+#  from utils import *
+
+#  lmql.set_default_model('chatgpt')
+lmql.set_default_model('gpt-4')
+with open('immigration_script.json') as f:
+    full_script = json.load(f)
+    script_details = full_script[0]
+    script_description = script_details['script_description']
+    script_length = len(full_script)
+    script = full_script[1:script_length]
+
+
+system_prompt = f"You are a trained volunteer canvasser named Brook.\
+ Your goal is to have a conversation with the user about {script_description}.\
+ To do so, you use patience, empathy, and fact. You do not judge the user. You do not tell them they are wrong for holding their opinion.\
+ You are not allowed to ask questions that are not in the script, other than asking the user to explain their position.\
+ Remember that we are trying to be non-judgmental and to elicit narratives from the user about their experiences.\
+ Remember that the user may be responding from their phone, so their responses may be short or incomplete.\
+ As such we should accept any response that is relevant to the question situation, even if it may be offensive to some."
+
+max_depth = 3
+>>>>>>> 011bb8d (upload large)
 
 <<<<<<< HEAD
 ### SET OPTIONS ###
@@ -90,11 +117,17 @@ def setup_logger(name, log_file, level=logging.INFO):
     return logger
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 chat_logger = setup_logger('chat_logger', 'logging/' + user_id + '.log')
 
 
 =======
 >>>>>>> 26acf8e (temp)
+=======
+chat_logger = setup_logger('chat_logger', 'test_chatbot.log')
+
+
+>>>>>>> 011bb8d (upload large)
 def log_messages(chat_logger, messages, level="info"):
     """
     Logs messages with specified logging level in a structured manner.
@@ -112,12 +145,15 @@ def log_messages(chat_logger, messages, level="info"):
             chat_logger.error(formatted_message)
         # Add more logging levels here as needed.
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 @lmql.query(chunksize=32, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 =======
             
+=======
+>>>>>>> 011bb8d (upload large)
 
 @lmql.query(chunksize=16)
 >>>>>>> 26acf8e (temp)
@@ -356,6 +392,7 @@ async def gen_flag(flag_text):
     return ANS
     '''
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 @lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
@@ -378,34 +415,13 @@ async def question_followup(question, user_input, errors, tries, max_depth):
                 
 =======
     
+=======
+
+>>>>>>> 011bb8d (upload large)
 def append_and_save(df, file_name):
     df = pd.concat([df, pd.DataFrame({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : 0, 'question_text': question_text, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, index=[0])], ignore_index=True)
     df.to_csv(file_name)
     return df    
-    
-#  lmql.set_default_model('chatgpt')
-lmql.set_default_model('gpt-4')
-with open('immigration_script.json') as f:
-    script = json.load(f)
-
-
-    
-chat_logger = setup_logger('chat_logger', 'test_chatbot.log')
-
-#  for i, step in enumerate(script):
-#      print(f"Step Number: {step['step_num']}")
-#      print(f"Step Text: {step['step_text']}")
-#      print(f"Step Questions: {step['questions']}")
-    
-system_prompt = "You are a trained volunteer canvasser named Brook.\
- Your goal is to have a conversation with the user to about workplace immigration raids by government agencies.\
- To do so, you use patience, empathy, and fact. You do not judge the user. You do not tell them they are wrong for holding their opinion.\
- You are not allowed to ask questions that are not in the script, other than asking the user to explain their position.\
- Remember that we are trying to be non-judgmental and to elicit narratives from the user about their experiences.\
- Remember that the user may be responding from their phone, so their responses may be short or incomplete.\
- As such we should accept any response that is relevant to the question situation, even if it may be offensive to some."
-
-max_depth = 3
 
 >>>>>>> 26acf8e (temp)
 #  minimal working example (for debugging)
