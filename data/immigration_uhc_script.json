@@ -1,0 +1,344 @@
+[
+    {
+      "script_external_name": "script_B",
+      "script_internal_name": "universal_healthcare_immigration_script",
+      "script_description": "Persuasion script to build support for universal healthcare that includes undocumented immigrants"
+    },
+    {
+      "step_num": 0,
+      "step_text": "Introduction",
+      "step_goal": "Introduce the canvasser, build rapport with the voter, and set the stage for the conversation about healthcare and immigration.",
+      "time_estimate": "1 minute",
+      "questions": [
+        {
+          "question_text": "Introduce yourself and ask the voter for their name.",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": false,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": true,
+          "max_length": 256
+        },
+        {
+          "question_text": "Say to the voter, \"It's great to meet you, [Voter Name]. I'm here today to have an open and honest conversation about healthcare and immigration. These are complex issues that affect all of us, and I'm interested in hearing your thoughts and experiences. Does that sound okay?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": false,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+      "step_num": 1,
+      "step_text": "First Rating",
+      "step_goal": "Get the voter's initial stance on universal healthcare and their reasoning behind it.",
+      "time_estimate": "2 minutes",
+      "questions": [
+        {
+          "question_text": "Ask the voter, \"On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?\"",
+          "generate_flag": true,
+          "flag_text": "What number on the 0-10 scale did the voter provide for their initial stance on universal healthcare?",
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": true,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+      "step_num": 2,
+      "step_text": "Rate Again Including Undocumented Immigrants",
+      "step_goal": "Get the voter's stance on universal healthcare that includes undocumented immigrants and explore their perspective on the issue.",
+      "time_estimate": "3 minutes",
+      "questions": [
+        {
+          "question_text": "Ask the voter, \"Some people believe that universal healthcare should include undocumented immigrants. On the same 0-10 scale, how do you feel about a universal healthcare system that covers everyone, regardless of immigration status?\"",
+          "generate_flag": true,
+          "flag_text": "What number on the 0-10 scale did the voter provide for their stance on universal healthcare that includes undocumented immigrants?",
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": true,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"What thoughts or concerns come to mind when you consider including undocumented immigrants in a universal healthcare system?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"How do you think including or excluding undocumented immigrants from a universal healthcare system might impact our communities as a whole?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+      "step_num": 3,
+      "step_text": "Share Immigration Stories",
+      "step_goal": "Connect with the voter by sharing personal stories related to immigration and encourage them to share their own experiences or thoughts on the topic.",
+      "time_estimate": "5 minutes",
+      "questions": [
+        {
+          "question_text": "Share a personal story about your connection to immigration, focusing on the human impact and the challenges faced by immigrants.",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": false,
+          "allow_assistant_response": false,
+          "verbatim": false,
+          "use_tool": true,
+          "tool_name": "immigration_story",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"Do you have any personal experiences with immigration or know someone who has immigrated to the United States? If so, would you feel comfortable sharing their story or how it has impacted your perspective on the issue?\"",
+          "generate_flag": true,
+          "flag_text": "Did the voter share a personal experience or story related to immigration?",
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "If the voter shared a story, ask, \"How has hearing or experiencing that story influenced your understanding of the challenges immigrants face?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": true,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+      "step_num": 4,
+      "step_text": "Share Support in Tough Times Stories",
+      "step_goal": "Build empathy and common ground by discussing times when the voter and the canvasser needed support during challenging situations, and relate it to the experiences of immigrants.",
+      "time_estimate": "5 minutes",
+      "questions": [
+        {
+          "question_text": "Ask the voter, \"Can you think of a time in your life when you or someone close to you faced a significant challenge and needed support from others? How did that experience make you feel?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Share a personal story about a time when you faced a challenge and needed support, emphasizing the importance of empathy and community.",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": false,
+          "allow_assistant_response": false,
+          "verbatim": false,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"Considering the challenges we've both faced, how do you think immigrants might feel when they are in need of support, especially if they are undocumented?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+      "step_num": 5,
+      "step_text": "Make the Case with the Race/Class Narrative",
+      "step_goal": "Present a compelling narrative that highlights the systemic issues in healthcare and immigration, and encourage the voter to consider the role of powerful interests in perpetuating these problems.",
+      "time_estimate": "5 minutes",
+      "questions": [
+        {
+          "question_text": "Say to the voter, \"I believe that everyone, regardless of their background or immigration status, deserves access to quality healthcare. However, our current system is broken, and it's not by accident.\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": false,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Present the race/class narrative, saying, \"Powerful interests, like insurance companies and pharmaceutical corporations, profit from keeping our healthcare system divided and inaccessible. They also benefit from an immigration system that exploits undocumented workers. These interests use fear and division to distract us from the real problem: a system that prioritizes wealth over the well-being of our communities.\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": false,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"What are your thoughts on this perspective? Do you see any connections between the challenges we face in healthcare and immigration?\"",
+          "generate_flag": true,
+          "flag_text": "What key insights or reactions did the voter share in response to the race/class narrative?",
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": true,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+      "step_num": 6,
+      "step_text": "Process Cognitive Dissonance",
+      "step_goal": "Help the voter reconcile any conflicting thoughts or feelings they may have about healthcare and immigration, and encourage them to reflect on how their experiences and the conversation have influenced their perspective.",
+      "time_estimate": "3 minutes",
+      "questions": [
+        {
+          "question_text": "Summarize the voter's key points and any areas of agreement or disagreement, then ask, \"As we've talked about these issues, have you noticed any shifts in your perspective or any new insights you've gained?\"",
+          "generate_flag": false,
+          "flag_text": null,
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": false,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": false,
+          "max_length": 256
+        },
+        {
+          "question_text": "Ask the voter, \"Considering your own experiences and the stories we've shared, how do you think we can build a healthcare system that works for everyone, including immigrants?\"",
+          "generate_flag": true,
+          "flag_text": "What ideas or reflections did the voter share about building an inclusive healthcare system?",
+          "flag_required": null,
+          "requires_user_answer": true,
+          "allow_assistant_response": false,
+          "verbatim": true,
+          "use_tool": false,
+          "tool_name": "",
+          "recallable": true,
+          "max_length": 256
+        }
+      ]
+    },
+    {
+    "step_num": 7,
+    "step_text": "Final Rating",
+    "step_goal": "Get the voter's final stance on universal healthcare that includes undocumented immigrants, understand the reasoning behind any shifts in perspective, and reinforce key takeaways from the conversation.",
+    "time_estimate": "2 minutes",
+    "questions": [
+      {
+        "question_text": "Ask the voter, \"After our conversation, on a scale of 0 to 10, how do you feel about a universal healthcare system that includes undocumented immigrants?\"",
+        "generate_flag": true,
+        "flag_text": "What number on the 0-10 scale did the voter provide for their final stance on universal healthcare that includes undocumented immigrants?",
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": true,
+        "use_tool": false,
+        "tool_name": "",
+        "recallable": true,
+        "max_length": 256
+      },
+      {
+        "question_text": "If the voter's stance has shifted, ask, \"What aspects of our conversation influenced your perspective?\"",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": true,
+        "use_tool": false,
+        "tool_name": "",
+        "recallable": false,
+        "max_length": 256
+      },
+      {
+        "question_text": "Thank the voter for their time and willingness to engage in the conversation, and emphasize the importance of continuing to discuss these issues with others in the community.",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": false,
+        "allow_assistant_response": false,
+        "verbatim": true,
+        "use_tool": false,
+        "tool_name": "",
+        "recallable": false,
+        "max_length": 256
+      }
+    ]
+  }
+]

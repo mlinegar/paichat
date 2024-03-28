@@ -1,0 +1,387 @@
+[
+  {
+    "script_external_name": "script_A",
+    "script_internal_name": "immigration_script",
+    "script_description": "workplace immigration raids by government agencies"
+  },
+  {
+    "step_num": 0,
+    "step_text": "Introduction",
+    "step_goal" : "Brief introduction.",
+    "questions": [
+      {
+        "question_text": "Ask the user their name.",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : true,
+        "max_length" : 256      
+      },
+      {
+        "question_text": "Based on what you know now, would you say you are against, undecided, or in favor of large-scale arrests and detainment of undocumented immigrants at their place of work?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 1,
+    "step_text": "Uncover Voter’s Honest Opinions",
+    "step_goal" : "To establish rapport and to understand the user's initial thoughts on the topic.",
+    "questions": [
+      {
+        "question_text": "On a 0-10 scale, where 0 is you’re absolutely in favor of large-scale workplace raids and 10 is you’re absolutely against large-scale workplace raids, where would you put yourself?",
+        "generate_flag": true,
+        "flag_text" : "Is the numeric response the user gave strictly less than 10?",        
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : true,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : true,
+        "max_length" : 256
+      },
+      {
+        "question_text": "What about large-scale workplace raids make that the right number for you?",
+        "generate_flag": false,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : true,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : true,
+        "max_length" : 256
+      },
+      {
+        "question_text": "What about large-scale workplace raids is on either side of the issue for you? What are some reasons that you would be in favor? Against?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : true,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 2,
+    "step_text": "Connect around experiences with immigration.",
+    "step_goal" : "Connect with user around experiences with immigration.",
+    "questions": [
+      {
+        "question_text": "What is your experience with immigration? Do you know anyone who has immigrated to the US? Do you know any undocumented immigrants?",
+        "generate_flag": true,
+        "flag_text" : "Does the user know any immigrants?",
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : true,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Are you sure you don't know any immigrants (documented or undocumented)? What about friends, family, or coworkers?",
+        "generate_flag": true,
+        "flag_text" : "Does the user know any immigrants?",
+        "flag_required": false,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : true,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "What kind of role do you see immigrants playing in your community?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": false,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : true,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Who (i.e. which immigrant) are you closest to? May I ask, how they are doing?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": true,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "(Regarding the immigrant they are close to) What is their story? What is their documentation status?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": true,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Ask the user: (Regarding the immigrant they are close to) What is their story? What is their documentation status?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": true,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Ask the user: (Regarding the immigrant they are close to) What do you think that was like for them? Tell me more?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": true,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Share your immigration story. Use the tool to share a relevant story or anecdote that you think will resonate with the user.",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": null,
+        "requires_user_answer": false,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : true,
+        "tool_name" : "immigration_story",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Do you know anyone who has a story like that? Is there anything about my story you can relate to?",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": false,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 3,
+    "step_text": "Connect Around Compassion Experiences",
+    "step_goal": "I think having these conversations is important because it gives us a chance to think about how we want to treat everyone in our community, including undocumented immigrants. We've all faced tough times and needed others' compassion...",
+    "questions": [
+      {
+        "question_text": "Can you recall a time when someone showed you compassion during a difficult period in your life?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "How did that experience of receiving compassion make you feel, and did it change how you interact with others?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Thinking about those feelings of compassion, how do you think we as a community should apply those feelings towards people facing tough situations, like undocumented immigrants?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 4,
+    "step_text": "Address Concerns",
+    "step_goal": "In this part of the conversation, we aim to address any concerns the person may have mentioned earlier. It's about acknowledging their viewpoints, providing information, and gently challenging misconceptions with empathy and facts.",
+    "questions": [
+      {
+        "question_text": "You mentioned earlier that [specific concern about immigration]. Can we explore that a bit more?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "There are often many sides to these issues. From what you know, what are some impacts of immigration raids on communities and families?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "How do you feel about the idea that immigration enforcement could be done in ways that are more humane and targeted, reducing harm to families and communities?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 5,
+    "step_text": "Make Your Case",
+    "step_goal": "To summarize the conversation's key points, emphasizing compassion and shared human values. The goal is to gently challenge the person to reconsider their initial stance on immigration in light of the stories and facts shared.",
+    "questions": [
+      {
+        "question_text": "Considering the stories we've shared and the information discussed, how do you now feel about the impact of immigration policies on individuals and families?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "Is there a particular aspect of our conversation that stood out to you or made you think differently about immigration and community support?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 6,
+    "step_text": "Final Rating",
+    "step_goal": "To ask the person to re-evaluate their stance on the issue using the same scale from the beginning of the conversation. This measures any shift in perspective and concludes the dialogue on a reflective note.",
+    "questions": [
+      {
+        "question_text": "Back to the scale from 0 to 10 we discussed at the beginning, where would you place yourself now after our conversation?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      },
+      {
+        "question_text": "What influenced any change in your position, if there was one?",
+        "generate_flag": false,
+        "flag_text": null,
+        "flag_required": null,
+        "requires_user_answer": true,
+        "allow_assistant_response": false,
+        "verbatim": false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  },
+  {
+    "step_num": 7,
+    "step_text": "Conclusion",
+    "step_goal" : "Brief conclusion.",
+    "questions": [
+      {
+        "question_text": "Briefly thank the user for their time.",
+        "generate_flag": false,
+        "flag_text" : null,
+        "flag_required": null,
+        "requires_user_answer": false,
+        "allow_assistant_response": false,
+        "verbatim" : false,
+        "use_tool" : false,
+        "tool_name" : "",
+        "recallable" : false,
+        "max_length" : 256
+      }
+    ]
+  }  
+  ]
