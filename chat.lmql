@@ -4,35 +4,6 @@ import json
 import asyncio
 import nest_asyncio
 nest_asyncio.apply()
-<<<<<<< HEAD
-import logging
-import pandas as pd
-import datetime
-import logging
-from tenacity import (
-    retry,
-    stop_after_attempt,
-    wait_random_exponential,
-)  
-from pathlib import Path
-#  from tinydb import TinyDB, Query
-#  from BetterJSONStorage import BetterJSONStorage
-from tinydb import TinyDB
-from tinydb.storages import JSONStorage
-from tinydb.middlewares import CachingMiddleware
-import uuid
-from chat.output import *
-message = MessageDecorator()
-#  from utils import *
-# FIXME: allow option to accept user_id as input/read from url/file
-#  user_id = "U12345678"
-user_id = str(uuid.uuid4())
-path = Path(f"output/{user_id}.db")
-# set up database for storage
-#  db = TinyDB(path, access_mode="r+", storage=BetterJSONStorage)
-db = TinyDB(path, storage=CachingMiddleware(JSONStorage))
-#  table = db.table(user_id)
-=======
 import logging
 import pandas as pd
 import logging
@@ -81,7 +52,6 @@ system_prompt = f"You are a trained volunteer canvasser named Brook.\
  As such we should accept any response that is relevant to the question situation, even if it may be offensive to some."
 
 max_depth = 3
->>>>>>> 011bb8d (upload large)
 
 <<<<<<< HEAD
 ### SET OPTIONS ###
