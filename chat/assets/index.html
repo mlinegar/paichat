@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAI Chat</title>
+    <title>PAI Chat V0.2</title>
     <link rel="stylesheet" href="chat_assets/index.css">
     <script>
     function addMessage(message, type, id=null) {
@@ -169,19 +169,80 @@
         addMessage(s, role, id);
         document.querySelector('.input textarea').focus();
     }
+
+    let isReportOpen = false;
+
+    function reportProblem() {
+        if (isReportOpen) {
+            const popup = document.querySelector('.popup');
+            if (popup) {
+                document.body.removeChild(popup);
+                isReportOpen = false;
+            }
+        } else {
+            const popup = document.createElement('div');
+            popup.classList.add('popup');
+            popup.innerHTML = `
+                <textarea id="problem-description" placeholder="Describe the problem..."></textarea>
+                <button id="save-problem">Save</button>
+                <button id="cancel-problem">Cancel</button>
+            `;
+            document.body.appendChild(popup);
+            isReportOpen = true;
+
+            document.getElementById('save-problem').onclick = function() {
+                const description = document.getElementById('problem-description').value;
+                
+                fetch('/submit-problem', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ description: description })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Problem report submitted successfully');
+                    } else {
+                        console.error('Failed to submit problem report');
+                        console.error('Response status:', response.status);
+                        console.error('Response text:', response.statusText);
+                    }
+                    document.body.removeChild(popup);
+                    isReportOpen = false;
+                })
+                .catch(error => {
+                    console.error('Error submitting problem report:', error);
+                    document.body.removeChild(popup);
+                    isReportOpen = false;
+                });
+            };
+
+            document.getElementById('cancel-problem').onclick = function() {
+                document.body.removeChild(popup);
+                isReportOpen = false;
+            };
+        }
+    }
     </script>
 </head>
 <body>
-    <div class="content side-view">
+    <!-- <div class="content side-view">  -->
+    <div class="content">
         <div class="front side">
-        <div class="toolbar">
-            <img src="chat_assets/caltech.svg" />
-            <h1>PAI Chat</h1>
-            <h2 id="connection-status"></h2>
-            <button onclick="document.querySelector('.content').classList.toggle('side-view')">
-                <img src="chat_assets/code.svg"/>
-            </button>
-        </div>
+            <div class="toolbar">
+                <div class="title-container">
+                    <img src="chat_assets/caltech.svg" alt="Caltech Logo" />
+                    <div>
+                        <h1>PAI Chat V0.2</h1>
+                        <h2 id="connection-status"></h2>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button id="report-problem" onclick="reportProblem()">Give Feedback</button>
+                    <button id="toggle-side" onclick="document.querySelector('.content').classList.toggle('side-view')">View Internals</button>
+                </div>
+            </div>
         <div class="chat"></div>
         <div class="input">
             <textarea onkeydown="chatKeyDown()"></textarea>

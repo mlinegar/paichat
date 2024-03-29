@@ -2,13 +2,18 @@ import lmql
 import os
 import json
 import asyncio
-
+# from lmql.lib.chat import message
 from lmql.runtime.bopenai import get_stats
 from aiohttp import web
+import time
+import datetime
 
 from .output import *
+# message = MessageDecorator()
 
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
+with open('output.txt', 'w') as file:
+    file.write(PROJECT_DIR)
 
 # serves index.html
 def handle(request):
@@ -100,6 +105,27 @@ class ChatServer:
         print("websocket connection closed", len(self.executors), "executors left", flush=True)
         return ws
 
+    async def handle_submit_problem(self, request):
+        print("Received submit_problem request")
+        data = await request.json()
+        description = data.get('description', '')
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+        filename = f"problem_report_{timestamp}.txt"
+        filepath = os.path.join(PROJECT_DIR, 'reports', filename)
+        
+        try:
+            os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        except OSError as e:
+            print(f"Error creating directory: {e}")
+            return web.Response(text='Error saving problem report', status=500)
+        
+        with open(filepath, 'w') as file:
+            file.write(description)
+            print(f"Problem report saved: {filepath}")
+        
+        return web.Response(text='Problem report submitted successfully', status=200)
+
+
     async def main(self):
         app = web.Application()
         
@@ -112,6 +138,10 @@ class ChatServer:
 
         # host chat_assets/ folder
         app.add_routes([web.get('/{path:.*}', assets)])
+
+        # host problem report submission
+        app.add_routes([web.post('/submit-problem', self.handle_submit_problem)])
+
         
         runner = web.AppRunner(app)
         await runner.setup()

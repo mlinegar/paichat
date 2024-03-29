@@ -391,3 +391,144 @@ pre, #raw-prompt {
     color: rgb(222, 220, 220);
     font-weight: bold;
 }
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 9999;
+}
+
+.popup textarea {
+    width: 100%;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.toolbar img {
+    height: 30px;
+    margin-right: 10px;
+}
+
+.toolbar h1 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.toolbar h2 {
+    font-size: 14px;
+    margin: 0;
+    color: #888;
+}
+
+.toolbar .title-container {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.button-container {
+    display: flex;
+    /* align-items: center; */
+}
+
+#toggle-side {
+    margin-left: 10px;
+    margin-right: 10px;
+    padding: 10px 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 40px;
+}
+
+#report-problem {
+    margin-left: 100px;
+    margin-right: 100px;
+    padding: 8px 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 40px;
+}
+
+
+#toggle-side:hover {
+    background-color: #e0e0e0;
+}
+
+#report-problem:hover {
+    background-color: #e0e0e0;
+}
+/* 
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+}
+
+.toolbar h1,
+.toolbar h2 {
+    margin: 0;
+    padding: 0;
+}
+
+.toolbar h1 {
+    font-size: 14pt;
+    color: black;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.toolbar h2 {
+    font-size: 10pt;
+    font-weight: 500;
+    color: grey;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+}
+
+/* .button-container button {
+    padding: 8px 16px;
+    border: none;
+    background-color: #4a4ae5;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 4px;
+    font-size: 12px;
+} */
+/* .button-container button {
+    padding: 800px 10px; 
+    margin-left: 10px;
+} */
+
+/* .button-container button:hover {
+    background-color: #3737c5;
+} */
+
+/* .button-container button:not(:first-child) {
+    margin-left: 50px; 
+} */ 

@@ -1,11 +1,12 @@
 import lmql
-from lmql.lib.chat import message
+#  from lmql.lib.chat import message
 import json
 import asyncio
 import nest_asyncio
 nest_asyncio.apply()
 import logging
 import pandas as pd
+import datetime
 import logging
 from tenacity import (
     retry,
@@ -19,6 +20,8 @@ from tinydb import TinyDB
 from tinydb.storages import JSONStorage
 from tinydb.middlewares import CachingMiddleware
 import uuid
+from chat.output import *
+message = MessageDecorator()
 #  from utils import *
 # FIXME: allow option to accept user_id as input/read from url/file
 #  user_id = "U12345678"
@@ -29,19 +32,36 @@ path = Path(f"output/{user_id}.db")
 db = TinyDB(path, storage=CachingMiddleware(JSONStorage))
 #  table = db.table(user_id)
 
+### SET OPTIONS ###
+small_model_name = 'openai/gpt-3.5-turbo'
+large_model_name = 'openai/gpt-4'
+small_model = lmql.model(small_model_name)
+large_model = lmql.model(large_model_name)
+#  lmql.set_default_model('chatgpt')
+#  lmql.set_default_model('gpt-4')
+max_depth = 3
+script_name = "immigration_script"
+
+
 def append_to_database(db, data):
     db.insert(data)
     db.storage.flush() # force save
 
-#  lmql.set_default_model('chatgpt')
-#  lmql.set_default_model('gpt-4')
-with open('data/immigration_script.json') as f:
+with open(f'data/{script_name}.json') as f:
     full_script = json.load(f)
     script_details = full_script[0]
     script_description = script_details['script_description']
     script_length = len(full_script)
     script = full_script[1:script_length]
 
+# add user info, model info, etc.
+append_to_database(db, {
+    "user_id": user_id,
+    "script_name": script_name,
+    "script_description": script_description,
+    "large_model": large_model_name,
+    "small_model": small_model_name
+})
 
 system_prompt = f"You are a trained volunteer canvasser named Brook.\
  Your goal is to have a conversation with the user about {script_description}.\
@@ -50,8 +70,6 @@ system_prompt = f"You are a trained volunteer canvasser named Brook.\
  Remember that we are trying to be non-judgmental and to elicit narratives from the user about their experiences.\
  Remember that the user may be responding from their phone, so their responses may be short or incomplete.\
  As such we should accept any response that is relevant to the question situation, even if it may be offensive to some."
-
-max_depth = 3
 
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -124,7 +142,7 @@ async def include(text):
     '''
 
 # FIXME: this is clumsy, and requires each tool individually to be added
-@lmql.query(model=lmql.model('openai/gpt-4'))
+@lmql.query(model=large_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def use_tool(tool_name):
     '''lmql
@@ -140,7 +158,7 @@ async def use_tool(tool_name):
     return RESPONSE
     '''
 
-@lmql.query(model=lmql.model('openai/gpt-4'))
+@lmql.query(model=large_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def ask_question(question_text, last_bot_response, user_response, verbatim, recalled_context="", max_length=256, tool_name=""):
     '''lmql
@@ -167,7 +185,7 @@ async def ask_question(question_text, last_bot_response, user_response, verbatim
     return QUESTION
     '''
 
-@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+@lmql.query(model=small_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def did_user_answer(question_text, answer_text, prev_answer_text):
     '''lmql
@@ -182,7 +200,7 @@ async def did_user_answer(question_text, answer_text, prev_answer_text):
     return ANSWERED
     '''
 
-@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+@lmql.query(model=small_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def get_user_answer(question_text, answer_text, prev_answer_text):
     '''lmql
@@ -198,7 +216,7 @@ async def get_user_answer(question_text, answer_text, prev_answer_text):
     return ANSWER
     '''
 
-@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+@lmql.query(model=small_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def assistant_response_needed(question_text, answer_text, prev_answer_text):
     '''lmql
@@ -213,46 +231,6 @@ async def assistant_response_needed(question_text, answer_text, prev_answer_text
     "Is a response from the assistant needed before moving on to the next question?[ASSISTANT_RESPONSE_NEEDED: yes_no]"
     return ASSISTANT_RESPONSE_NEEDED
     '''
-
-# FIXME: incorporate what next into this async call
-# then everything will be in parallel
-# replace with logic for whether need bot response before asking next question
-# e.g. if user hasn't answered or if they asked for more info
-# capture ASSISTANT_RESPONSE_NEEDED here
-# maybe: in follow up, check if user may want to respond to bot before moving on to next question
-# then what_next not needed!
-# logic of ordering for wrapper function:
-# if question not answered or if bot response needed, always feed to follow up (so these should take precedence)
-# if user answered...
-# FIXME: add logic: if question was answered, record it and add this info to follow up (e.g. we want to move on)
-
-# wrapper function for multiple async calls
-#  @lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
-#  @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
-#  async def analyze_question_answer(question_text, answer_text, prev_answer_text):
-#  @retry(wait=wait_random_exponential(min=1, max=30), stop=stop_after_attempt(6))
-#  async def execute_response_analysis(question_text, answer_text, prev_answer_text):
-#      user_answered_task = asyncio.create_task(did_user_answer(question_text, answer_text, prev_answer_text))
-#      user_answer_task = asyncio.create_task(get_user_answer(question_text, answer_text, prev_answer_text))
-#      assistant_response_needed_task = asyncio.create_task(assistant_response_needed(question_text, answer_text, prev_answer_text))
-    
-#      while True:
-#          done, _ = await asyncio.wait([user_answered_task, user_answer_task, assistant_response_needed_task], return_when=asyncio.FIRST_COMPLETED)
-        
-#          if user_answered_task in done:
-#              user_answered = user_answered_task.result()
-            
-#              if not user_answered:
-#                  return False, "", True
-            
-#              elif user_answer_task in done and assistant_response_needed_task in done:
-#                  user_answer = user_answer_task.result()
-#                  assistant_response_needed = assistant_response_needed_task.result()
-                
-#                  return True, user_answer, assistant_response_needed
-        
-#          else:
-#              await asyncio.sleep(0.1)
 
 @retry(wait=wait_random_exponential(min=1, max=30), stop=stop_after_attempt(6))
 async def execute_response_analysis(question_text, answer_text, prev_answer_text):
@@ -271,31 +249,7 @@ async def execute_response_analysis(question_text, answer_text, prev_answer_text
 
     return True, user_answer_ANS, assistant_response_needed_ANS
 
-# FIXME: replace this with multiple async calls
-# like here: https://github.com/openai/openai-cookbook/blob/main/examples/How_to_use_guardrails.ipynb
-# (section 7)
-# takes waaaaaay too long to run and too many tokens
-#  @lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
-#  @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
-#  async def what_next(question_context):
-#      '''lmql
-#      "Should we continue the current conversation or move on to the next question?"
-#      "Context: {question_context}"
-#      "We need to move through this survey quickly, but we also want the user to share their experiences and to show that we hear them."
-#      #  "Does the assistant need to respond to the user's last message rather than ask the next question?"
-#      #  "[COT: chain_of_thought]"
-#      #  "[ASSISTANT_RESPONSE_NEEDED: yes_no]"
-#      ASSISTANT_RESPONSE_NEEDED = True
-#      if ASSISTANT_RESPONSE_NEEDED:
-#          "Does the user seem engaged and wanting to continue this exact specific part of the conversation? (Assume no)"
-#          "[COT2: chain_of_thought]"
-#          "[USER_RESPONSE_NEEDED: yes_no]"
-#      else:
-#          USER_RESPONSE_NEEDED = False
-#      return ASSISTANT_RESPONSE_NEEDED, USER_RESPONSE_NEEDED
-    #  '''
-    
-@lmql.query(model=lmql.model('openai/gpt-3.5-turbo'))
+@lmql.query(model=small_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def gen_flag(flag_text):
     '''lmql
@@ -305,7 +259,7 @@ async def gen_flag(flag_text):
     return ANS
     '''
 
-@lmql.query(model=lmql.model('openai/gpt-4'))
+@lmql.query(model=large_model)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def question_followup(question, user_input, errors, tries, max_depth):
     '''lmql
@@ -323,11 +277,6 @@ async def question_followup(question, user_input, errors, tries, max_depth):
     "[FOLLOW_UP]"
     return FOLLOW_UP
     '''
-
-def append_and_save(df, file_name):
-    df = pd.concat([df, pd.DataFrame({'step_num': step_num, 'step_text': step_text, 'question_num': qq, 'tries' : 0, 'question_text': question_text, 'bot_output' : QUESTION, 'user_input': user_input, 'answer' : QUESTION_ANSWER}, index=[0])], ignore_index=True)
-    df.to_csv(file_name)
-    return df    
 
 #  minimal working example (for debugging)
 #  argmax(chunksize=128)
@@ -397,6 +346,7 @@ for i, step in enumerate(script):
         log_messages(chat_logger, {"Question" :  QUESTION})
 
         append_to_database(db,{
+            "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "step_num": step_num,
             "step_text": step_text,
             "question_num": qq,
@@ -415,6 +365,7 @@ for i, step in enumerate(script):
             log_messages(chat_logger, {"User Input": user_input}, level="info")
 
             append_to_database(db,{
+                "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "step_num": step_num,
                 "step_text": step_text,
                 "question_num": qq,
@@ -439,6 +390,7 @@ for i, step in enumerate(script):
                             "ASSISTANT_RESPONSE_NEEDED" : ASSISTANT_RESPONSE_NEEDED})
 
             append_to_database(db,{
+                "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 "step_num": step_num,
                 "step_text": step_text,
                 "question_num": qq,
@@ -463,6 +415,7 @@ for i, step in enumerate(script):
                     step_flag = await gen_flag(flag_text)
                     log_messages(chat_logger, {"Flag question" :  flag_text, "Step flag" :  step_flag})
                     append_to_database(db,{
+                        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "step_num": step_num,
                         "step_text": step_text,
                         "question_num": qq,
@@ -479,6 +432,7 @@ for i, step in enumerate(script):
 
                     log_messages(chat_logger, {"tries" : tries, "errors" : errors, "qa_text" : qa_text, "QUESTION_FOLLOWUP" :  QUESTION_FOLLOWUP}, level="info")
                     append_to_database(db,{
+                        "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                         "step_num": step_num,
                         "step_text": step_text,
                         "question_num": qq,
@@ -500,6 +454,7 @@ for i, step in enumerate(script):
 
                 log_messages(chat_logger, {"tries" : tries, "errors" : errors, "qa_text" : qa_text, "QUESTION_FOLLOWUP" :  QUESTION_FOLLOWUP}, level="error")
                 append_to_database(db,{
+                    "time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                     "step_num": step_num,
                     "step_text": step_text,
                     "question_num": qq,
