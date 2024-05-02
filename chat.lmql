@@ -39,7 +39,7 @@ small_model = lmql.model(small_model_name)
 large_model = lmql.model(large_model_name)
 #  lmql.set_default_model('chatgpt')
 #  lmql.set_default_model('gpt-4')
-max_depth = 3
+max_depth = 1
 script_name = "immigration_script"
 
 
@@ -69,7 +69,8 @@ system_prompt = f"You are a trained volunteer canvasser named Brook.\
  You are not allowed to ask questions that are not in the script, other than asking the user to explain their position.\
  Remember that we are trying to be non-judgmental and to elicit narratives from the user about their experiences.\
  Remember that the user may be responding from their phone, so their responses may be short or incomplete.\
- As such we should accept any response that is relevant to the question situation, even if it may be offensive to some."
+ As such we should accept any response that is relevant to the question situation, even if it may be offensive to some.\
+ Make sure to keep your responses brief and to the point. Break any long responses into multiple paragraphs."
 
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -104,15 +105,16 @@ def log_messages(chat_logger, messages, level="info"):
             chat_logger.error(formatted_message)
         # Add more logging levels here as needed.
 
-@lmql.query(chunksize=16)
-@retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
-async def yes_no():
-    '''lmql
-    "Respond only with one of: 'Yes.' or 'No.'."
-    "A:[FLAG]" #where STOPS_AT(FLAG, '.') # FLAG in ['Yes.', 'No.'] and 
-    return "yes" in FLAG.lower()
-    '''
 
+        @lmql.query(chunksize=32)
+        @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+        async def yes_no():
+            '''lmql
+            "Respond only with one of: 'Yes.' or 'No.'."
+            "A:[FLAG]" #where STOPS_AT(FLAG, '.') # FLAG in ['Yes.', 'No.'] and 
+            return "yes" in FLAG.lower()
+            '''
+        
 @lmql.query
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def chain_of_thought():
@@ -277,7 +279,7 @@ async def question_followup(question, user_input, errors, tries, max_depth):
     "[FOLLOW_UP]"
     return FOLLOW_UP
     '''
-
+                
 #  minimal working example (for debugging)
 #  argmax(chunksize=128)
 #  "{:system} {system_prompt}"
@@ -299,7 +301,7 @@ argmax(chunksize=128)
 last_bot_response = INTRO
 
 for i, step in enumerate(script):
-    
+   
     step_num = step['step_num']
     step_check = f"Step Number: {step_num}"
     chat_logger.info(step_check)
@@ -313,10 +315,14 @@ for i, step in enumerate(script):
     step_responses = "" # replace this with recallable info? or use as a supplement separately? add to ask_question?
     recalled_context = ""
 
+    # add another system prompt here to guide the bot through the step
+    step_prompt = f""
+    #  "{:system} {step_text}"
+
     for qq, question in enumerate(questions):
         tries = 0
         errors = 0
-        
+       
         question_text = questions[qq]['question_text']
         if qq < len(questions) - 1:
             next_question_text = questions[qq+1]['question_text']
@@ -333,7 +339,7 @@ for i, step in enumerate(script):
         use_tool = question['use_tool']
         tool_name = question['tool_name']
         log_messages(chat_logger, {"Step Number" : step_num, "Step Text" : step_text, "Question Number" : qq, "Question Text" : question_text, "Requires User Answer" : requires_user_answer, "Allow Assistant Response" : allow_assistant_response, "Flag Required" : flag_required, "Step Flag" : step_flag, "Generate Flag" : generate_flag, "Recallable" : recallable, "Verbatim" : verbatim})
-        
+       
         # when exactly do we want to skip a question?
         # if the flag is required, and the flag is not set or is false
         if (not flag_required is None) and (not step_flag == flag_required):
@@ -356,7 +362,7 @@ for i, step in enumerate(script):
 
         continue_conversation = requires_user_answer
         while continue_conversation and tries <= max_depth and errors <= max_depth:
-            
+           
             user_input = await input()
             step_responses = step_responses + "\n" + user_input
             "{:user} {user_input}"    
@@ -423,7 +429,7 @@ for i, step in enumerate(script):
                         "flag_text": flag_text,
                         "step_flag": step_flag
                     })
-                
+               
                 if ASSISTANT_RESPONSE_NEEDED:
                     tries += 1
                     qa_text = "Following up to the user's response."
@@ -462,7 +468,7 @@ for i, step in enumerate(script):
                     "bot_output": QUESTION_FOLLOWUP,
                     "question_followup": True
                 })
-                
+               
                 if errors >= max_depth or tries >= max_depth:
                     continue_conversation = False
                 else:

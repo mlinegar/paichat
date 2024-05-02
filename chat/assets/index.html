@@ -49,9 +49,11 @@
     }
     function clickSend() {
         const input = document.querySelector('.input textarea');
-        const message = input.value;
-        input.value = '';
-        addMessage(message, 'assistant');
+        // const message = input.value;
+        // input.value = '';
+        // addMessage(message, 'assistant');
+        event.preventDefault();
+        sendMessage();
     }
     function chatKeyDown() {
         const input = document.querySelector('.input textarea');

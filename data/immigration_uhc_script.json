@@ -11,7 +11,7 @@
       "time_estimate": "1 minute",
       "questions": [
         {
-          "question_text": "Introduce yourself and ask the voter for their name.",
+          "question_text": "Ask the user for their name.",
           "generate_flag": false,
           "flag_text": null,
           "flag_required": null,
@@ -21,19 +21,6 @@
           "use_tool": false,
           "tool_name": "",
           "recallable": true,
-          "max_length": 256
-        },
-        {
-          "question_text": "Say to the voter, \"It's great to meet you, [Voter Name]. I'm here today to have an open and honest conversation about healthcare and immigration. These are complex issues that affect all of us, and I'm interested in hearing your thoughts and experiences. Does that sound okay?\"",
-          "generate_flag": false,
-          "flag_text": null,
-          "flag_required": null,
-          "requires_user_answer": false,
-          "allow_assistant_response": false,
-          "verbatim": true,
-          "use_tool": false,
-          "tool_name": "",
-          "recallable": false,
           "max_length": 256
         }
       ]
