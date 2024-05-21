@@ -1,0 +1,10 @@
+2024-05-19 17:07:42,892 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-19 17:07:45,219 INFO User input: I'm Tim
+2024-05-19 17:07:47,585 INFO Sent message: Hey Tim, could you tell me a story about a tiny monkey?
+2024-05-19 17:08:02,780 INFO User input: I think you're supposed to tell me a story about a tiny monkey
+2024-05-19 17:08:05,037 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-19 17:08:05,038 INFO Sent message: 
+2024-05-19 17:08:05,507 INFO Sent message: Would you like me to tell you a story about a tiny monkey?
+2024-05-19 17:08:05,509 INFO Errors: 1
+2024-05-19 17:08:40,104 INFO User input: I'd rather not
+2024-05-19 17:08:41,814 INFO Sent message: Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?
