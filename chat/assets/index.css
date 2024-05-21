@@ -4,6 +4,21 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow: hidden;
 }
+
+/* Light mode styles */
+body {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+}
+
 .content {
     width: 400pt;
     max-width: 100%;
@@ -14,7 +29,6 @@ body {
     transform: translateX(-50%);
     display: flex;
     flex-direction: column;
-
     transform-style: preserve-3d;
     perspective: 1000px;
 }
@@ -47,6 +61,13 @@ body {
     background-color: white;
 }
 
+/* Dark mode chat background */
+@media (prefers-color-scheme: dark) {
+    .chat {
+        background-color: #1e1e1e;
+    }
+}
+
 .chat .api-key-entry {
     padding: 10pt;
 }
@@ -77,6 +98,15 @@ body {
     position: relative;
     padding-left: 32pt;
 }
+
+/* Dark mode toolbar background */
+@media (prefers-color-scheme: dark) {
+    .toolbar {
+        background-color: #2c2c2c;
+        border-bottom: 0.5pt solid #444;
+    }
+}
+
 .toolbar>.icon {
     font-size: 20pt;
 }
@@ -90,6 +120,7 @@ body {
     height: 20pt;
     display: block;
 }
+
 .toolbar h1 {
     margin: 0;
     padding: 0;
@@ -98,6 +129,14 @@ body {
     font-size: 14pt;
     font-weight: 500;
 }
+
+/* Dark mode toolbar text color */
+@media (prefers-color-scheme: dark) {
+    .toolbar h1 {
+        color: #e0e0e0;
+    }
+}
+
 .toolbar h2 {
     margin: 0;
     padding: 0;
@@ -106,16 +145,33 @@ body {
     color: grey;
 }
 
+/* Dark mode toolbar secondary text color */
+@media (prefers-color-scheme: dark) {
+    .toolbar h2 {
+        color: #888;
+    }
+}
+
 .toolbar button {
     position: absolute;
     right: 5pt;
     top: 5pt;
 }
+
 .input {
     background-color: #eeeeee;
     border-top: 0.5pt solid grey;
     display: flex;
 }
+
+/* Dark mode input background */
+@media (prefers-color-scheme: dark) {
+    .input {
+        background-color: #2c2c2c;
+        border-top: 0.5pt solid #444;
+    }
+}
+
 .input textarea {
     flex: 1;
     margin: 10pt;
@@ -128,19 +184,31 @@ body {
     resize: none;
     padding: 5pt;
 }
+
+/* Dark mode input textarea */
+@media (prefers-color-scheme: dark) {
+    .input textarea {
+        background-color: #333;
+        color: #e0e0e0;
+        border: 1px solid #555;
+    }
+}
+
 .input button {
     margin: 10pt;
 }
+
 .message {
     margin: 5pt;
     white-space: pre-wrap;
 }
+
 .message.assistant {
     margin-right: 10%;
     text-align: left;
-    
     animation: fademovein 0.125s ease-out;
 }
+
 @keyframes fademovein {
     0% {
         opacity: 0;
@@ -152,7 +220,7 @@ body {
     }
 }
 
-.message.assistant .message-content{
+.message.assistant .message-content {
     background-color: rgb(74, 74, 229);
     border-radius: 8pt;
     padding: 8pt;
@@ -160,24 +228,28 @@ body {
     text-align: left;
     color: white;
 }
+
 .message.user {
     color: rgb(43, 43, 43);
     margin-left: 15%;
     text-align: right;
 }
-.message.message.user .message-content {
+
+.message.user .message-content {
     background-color: rgb(206, 205, 205);
     border-radius: 8pt;
     padding: 8pt;
     display: inline-block;
     text-align: left;
 }
+
 .front .system {
     text-align: center;
     color: grey;
     font-weight: 300;
     font-size: 10pt;
 }
+
 .chat .thinking {
     background-color: #eeeeee;
     display: inline-block;
@@ -185,6 +257,14 @@ body {
     padding: 5pt;
     margin-left: 5pt;
 }
+
+/* Dark mode thinking background */
+@media (prefers-color-scheme: dark) {
+    .chat .thinking {
+        background-color: #333;
+    }
+}
+
 .chat .thinking .bubble {
     width: 7pt;
     height: 7pt;
@@ -196,6 +276,7 @@ body {
     position: relative;
     bottom: 1.5pt;
 }
+
 @keyframes jump {
     0% {
         transform: translateY(0%);
@@ -207,10 +288,12 @@ body {
         transform: translateY(50%);
     }
 }
-/* delay bubbles  */
+
+/* delay bubbles */
 .chat .thinking .bubble:nth-child(2) {
     animation-delay: 0.2s;
 }
+
 .chat .thinking .bubble:nth-child(3) {
     animation-delay: 0.4s;
 }
@@ -280,13 +363,11 @@ button img {
     flex: 1;
     display: flex;
     flex-direction: column;
-
     position: absolute;
     top: 0;
     left: calc(100% - 5pt);
     width: calc(100% - 10pt);
     bottom: 0;
-
     /* rotate to backside */
     /* transform: rotateY(180deg); */
     transform: translateX(-110%);
@@ -304,7 +385,6 @@ button img {
 
 .code {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
     border: 1pt solid rgb(205, 205, 205);
     box-shadow: 0 0 80pt rgba(0, 0, 0, 0.065);
     border-radius: 5pt;
@@ -338,12 +418,10 @@ button img {
     left: 0;
     right: 0;
     bottom: 0;
-
     /* rotate to backside */
     transform: rotateY(0deg);
     backface-visibility: hidden;
     transition: transform 0.5s ease-in-out;
-
     border: 1pt solid rgb(205, 205, 205);
     border-radius: 5pt;
     overflow: hidden;
@@ -358,7 +436,6 @@ button img {
     transform-style: preserve-3d;
     perspective: 1000px;
     box-shadow: 0 0 20pt rgba(0, 0, 0, 0.16);
-    
 }
 
 #raw-prompt {
@@ -402,6 +479,13 @@ pre, #raw-prompt {
     border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
+}
+
+/* Dark mode popup background */
+@media (prefers-color-scheme: dark) {
+    .popup {
+        background-color: #2c2c2c;
+    }
 }
 
 .popup textarea {
@@ -456,6 +540,13 @@ pre, #raw-prompt {
     min-width: 40px;
 }
 
+/* Dark mode toggle button */
+@media (prefers-color-scheme: dark) {
+    #toggle-side {
+        background-color: #333;
+    }
+}
+
 #report-problem {
     margin-left: 100px;
     margin-right: 100px;
@@ -468,67 +559,31 @@ pre, #raw-prompt {
     min-width: 40px;
 }
 
+/* Dark mode report button */
+@media (prefers-color-scheme: dark) {
+    #report-problem {
+        background-color: #333;
+    }
+}
 
 #toggle-side:hover {
     background-color: #e0e0e0;
 }
 
+/* Dark mode toggle button hover */
+@media (prefers-color-scheme: dark) {
+    #toggle-side:hover {
+        background-color: #444;
+    }
+}
+
 #report-problem:hover {
     background-color: #e0e0e0;
 }
-/* 
 
-.toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-    flex-wrap: wrap;
+/* Dark mode report button hover */
+@media (prefers-color-scheme: dark) {
+    #report-problem:hover {
+        background-color: #444;
+    }
 }
-
-.toolbar h1,
-.toolbar h2 {
-    margin: 0;
-    padding: 0;
-}
-
-.toolbar h1 {
-    font-size: 14pt;
-    color: black;
-    font-weight: 500;
-    margin-right: 10px;
-}
-
-.toolbar h2 {
-    font-size: 10pt;
-    font-weight: 500;
-    color: grey;
-}
-
-.button-container {
-    display: flex;
-    align-items: center;
-}
-
-/* .button-container button {
-    padding: 8px 16px;
-    border: none;
-    background-color: #4a4ae5;
-    color: white;
-    cursor: pointer;
-    margin-left: 10px;
-    border-radius: 4px;
-    font-size: 12px;
-} */
-/* .button-container button {
-    padding: 800px 10px; 
-    margin-left: 10px;
-} */
-
-/* .button-container button:hover {
-    background-color: #3737c5;
-} */
-
-/* .button-container button:not(:first-child) {
-    margin-left: 50px; 
-} */ 

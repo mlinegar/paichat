@@ -1,0 +1,14 @@
+2024-05-18 17:30:33,860 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-18 17:30:37,627 INFO User input: I'm Tim
+2024-05-18 17:30:39,578 INFO Sent message: On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?
+2024-05-18 17:37:54,049 INFO User input: 10
+2024-05-18 17:37:55,671 INFO Sent message: Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?
+2024-05-18 17:38:01,640 INFO User input: I'd rather not
+2024-05-18 17:38:03,024 INFO Sent message: Some people believe that universal healthcare should include undocumented immigrants. On the same 0-10 scale, how do you feel about a universal healthcare system that covers everyone, regardless of immigration status?
+2024-05-18 17:38:15,655 INFO User input: 7
+2024-05-18 17:38:17,084 INFO Sent message: What thoughts or concerns come to mind when you consider including undocumented immigrants in a universal healthcare system?
+2024-05-18 17:38:25,804 INFO User input: immigrants shouldn't take resources we dn't have
+2024-05-18 17:38:28,008 INFO Sent message: How do you think including or excluding undocumented immigrants from a universal healthcare system might impact our communities as a whole?
+2024-05-18 17:38:49,892 INFO User input: I don't carew
+2024-05-18 17:38:52,985 INFO Sent message: I understand. Shifting gears a bit, do you have any personal experiences or stories related to immigration that have impacted your views? Maybe something that highlights the challenges immigrants face?
+2024-05-18 17:38:53,810 INFO Sent message: Got it. Do you have any personal experiences with immigration, or do you know someone who has immigrated to the United States? If so, would you feel comfortable sharing their story or how it has influenced your perspective on the issue?

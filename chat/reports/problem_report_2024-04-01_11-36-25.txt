@@ -1,0 +1,1 @@
+For some reason, when I click the purple > arrow to submit response it doesn’t register the response. But if I use return on keyboard it does register. Perhaps the > arrow serves another purpose? 

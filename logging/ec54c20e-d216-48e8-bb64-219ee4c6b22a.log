@@ -1,0 +1,10 @@
+2024-05-19 21:50:21,971 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-19 21:50:24,237 INFO User input: I'm Tim
+2024-05-19 21:50:26,013 INFO Sent message: Nice to meet you, Tim! How can I assist you today?
+2024-05-19 21:50:26,015 INFO Sent message: 
+2024-05-19 21:51:51,988 INFO User input: What question are you supposed to ask me?
+2024-05-19 21:51:53,514 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-19 21:51:53,515 INFO Sent message: 
+2024-05-19 21:51:54,255 INFO Sent message: Got it, Tim. On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?
+2024-05-19 21:51:54,256 INFO Sent message: 
+2024-05-19 21:51:54,257 INFO Errors: 1
