@@ -1,0 +1,17 @@
+2024-05-17 01:01:14,530 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-17 01:01:16,066 INFO User input: Tim
+2024-05-17 01:01:17,871 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 01:01:17,872 INFO Sent message: 
+2024-05-17 01:01:18,222 INFO Sent message: Is your name Tim?
+2024-05-17 01:01:18,223 INFO Errors: 1
+2024-05-17 01:01:22,216 INFO User input: I'm tim, yes.
+2024-05-17 01:01:23,893 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 01:01:23,895 INFO Sent message: 
+2024-05-17 01:01:24,470 INFO Sent message: Is your name Tim?
+2024-05-17 01:01:24,472 INFO Errors: 2
+2024-05-17 01:01:29,891 INFO User input: Yes.
+2024-05-17 01:01:31,332 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 01:01:31,334 INFO Sent message: 
+2024-05-17 01:01:32,116 INFO Sent message: Could you please tell me your name?
+2024-05-17 01:01:32,118 INFO Errors: 3
+2024-05-17 10:04:00,583 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?

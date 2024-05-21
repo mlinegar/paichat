@@ -1,0 +1,6 @@
+2024-05-17 10:48:31,834 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-17 10:48:33,635 INFO User input: Tim
+2024-05-17 10:48:35,377 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 10:48:35,378 INFO Sent message: 
+2024-05-17 10:48:36,096 INFO Sent message: Is your name Tim?
+2024-05-17 10:48:36,097 INFO Errors: 1
