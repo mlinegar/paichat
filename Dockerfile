@@ -4,6 +4,7 @@ FROM continuumio/miniconda3
 # Set the working directory in the container
 WORKDIR /app
 
+
 # Copy the Conda environment file
 COPY environment.yml /app/environment.yml
 
