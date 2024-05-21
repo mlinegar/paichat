@@ -1,0 +1,14 @@
+2024-05-04 14:11:20,605 INFO Step Number: 0
+2024-05-04 14:11:20,605 INFO Step Number: 0
+2024-05-04 14:11:20,605 INFO Step Text: Introduction
+2024-05-04 14:11:20,605 INFO Question Number: 0
+2024-05-04 14:11:20,605 INFO Question Text: Ask the user for their name.
+2024-05-04 14:11:20,605 INFO Requires User Answer: True
+2024-05-04 14:11:20,605 INFO Allow Assistant Response: False
+2024-05-04 14:11:20,605 INFO Flag Required: None
+2024-05-04 14:11:20,605 INFO Step Flag: None
+2024-05-04 14:11:20,605 INFO Generate Flag: False
+2024-05-04 14:11:20,605 INFO Recallable: True
+2024-05-04 14:11:20,605 INFO Verbatim: False
+2024-05-04 14:11:21,641 INFO Question:  May I know your name, please?
+2024-05-04 14:11:23,430 INFO User Input: Tim

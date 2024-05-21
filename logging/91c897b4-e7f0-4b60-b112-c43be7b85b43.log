@@ -1,0 +1,6 @@
+2024-05-17 10:52:10,475 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-17 10:52:11,741 INFO User input: tim
+2024-05-17 10:52:13,471 INFO Sent message: 
+2024-05-17 10:52:14,621 INFO Sent message: How do you feel about universal healthcare on a scale from 0 to 10, where 0 means you're strongly against it and 10 means you're strongly in favor?
+2024-05-17 10:55:24,915 INFO User input: 0
+2024-05-17 10:55:27,675 INFO Sent message: Could you share what led you to choose that number? What experiences or beliefs have influenced your view on universal healthcare?

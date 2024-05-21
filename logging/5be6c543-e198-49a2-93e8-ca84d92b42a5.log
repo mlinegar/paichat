@@ -1,0 +1,61 @@
+2024-05-04 14:14:23,873 INFO Step Number: 0
+2024-05-04 14:14:23,874 INFO Step Number: 0
+2024-05-04 14:14:23,874 INFO Step Text: Introduction
+2024-05-04 14:14:23,874 INFO Question Number: 0
+2024-05-04 14:14:23,874 INFO Question Text: Ask the user for their name.
+2024-05-04 14:14:23,874 INFO Requires User Answer: True
+2024-05-04 14:14:23,874 INFO Allow Assistant Response: False
+2024-05-04 14:14:23,874 INFO Flag Required: None
+2024-05-04 14:14:23,874 INFO Step Flag: None
+2024-05-04 14:14:23,874 INFO Generate Flag: False
+2024-05-04 14:14:23,874 INFO Recallable: True
+2024-05-04 14:14:23,874 INFO Verbatim: False
+2024-05-04 14:14:25,392 INFO Question:  May I know your name?
+2024-05-04 14:14:26,815 INFO User Input: tim
+2024-05-04 14:14:29,568 INFO QUESTION_ANSWERED: True
+2024-05-04 14:14:29,568 INFO QUESTION_ANSWER:  The user's answer was "tim."
+2024-05-04 14:14:29,568 INFO ASSISTANT_RESPONSE_NEEDED: False
+2024-05-04 14:14:29,570 INFO Step Number: 1
+2024-05-04 14:14:29,570 INFO Step Number: 1
+2024-05-04 14:14:29,570 INFO Step Text: First Rating
+2024-05-04 14:14:29,570 INFO Question Number: 0
+2024-05-04 14:14:29,570 INFO Question Text: Ask the voter, "On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?"
+2024-05-04 14:14:29,570 INFO Requires User Answer: True
+2024-05-04 14:14:29,570 INFO Allow Assistant Response: False
+2024-05-04 14:14:29,570 INFO Flag Required: None
+2024-05-04 14:14:29,570 INFO Step Flag: None
+2024-05-04 14:14:29,570 INFO Generate Flag: True
+2024-05-04 14:14:29,570 INFO Recallable: True
+2024-05-04 14:14:29,570 INFO Verbatim: True
+2024-05-04 14:14:31,121 INFO Question:  Of course! On a scale from 0 to 10, where 0 means you are strongly against and 10 means you are strongly in favor, how do you feel about universal healthcare?
+2024-05-04 14:14:38,650 INFO User Input: against
+2024-05-04 14:14:40,770 INFO QUESTION_ANSWERED: True
+2024-05-04 14:14:40,770 INFO QUESTION_ANSWER:  The user's answer was "against."
+2024-05-04 14:14:40,770 INFO ASSISTANT_RESPONSE_NEEDED: False
+2024-05-04 14:14:46,767 INFO Flag question: What number on the 0-10 scale did the voter provide for their initial stance on universal healthcare?
+2024-05-04 14:14:46,767 INFO Step flag: True
+2024-05-04 14:14:46,768 INFO Step Number: 1
+2024-05-04 14:14:46,768 INFO Step Text: First Rating
+2024-05-04 14:14:46,768 INFO Question Number: 1
+2024-05-04 14:14:46,769 INFO Question Text: Ask the voter, "Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?"
+2024-05-04 14:14:46,769 INFO Requires User Answer: True
+2024-05-04 14:14:46,769 INFO Allow Assistant Response: False
+2024-05-04 14:14:46,769 INFO Flag Required: None
+2024-05-04 14:14:46,769 INFO Step Flag: True
+2024-05-04 14:14:46,769 INFO Generate Flag: False
+2024-05-04 14:14:46,769 INFO Recallable: False
+2024-05-04 14:14:46,769 INFO Verbatim: True
+2024-05-04 14:14:48,679 INFO Question:  I see that you're against universal healthcare. Could you share more about why you feel this way? What experiences or beliefs have influenced your perspective on this issue?
+2024-05-04 17:16:40,584 INFO Step Number: 0
+2024-05-04 17:16:40,586 INFO Step Number: 0
+2024-05-04 17:16:40,586 INFO Step Text: Introduction
+2024-05-04 17:16:40,586 INFO Question Number: 0
+2024-05-04 17:16:40,586 INFO Question Text: Ask the user for their name.
+2024-05-04 17:16:40,586 INFO Requires User Answer: True
+2024-05-04 17:16:40,586 INFO Allow Assistant Response: False
+2024-05-04 17:16:40,586 INFO Flag Required: None
+2024-05-04 17:16:40,586 INFO Step Flag: None
+2024-05-04 17:16:40,586 INFO Generate Flag: False
+2024-05-04 17:16:40,586 INFO Recallable: True
+2024-05-04 17:16:40,586 INFO Verbatim: False
+2024-05-04 17:16:41,227 INFO Question:  May I know your name?
