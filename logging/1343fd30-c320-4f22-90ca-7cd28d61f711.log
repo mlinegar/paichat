@@ -1,0 +1,10 @@
+2024-05-17 00:22:55,402 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-17 00:22:57,442 INFO User input: Tim
+2024-05-17 00:22:58,616 INFO Sent message: 
+2024-05-17 00:22:59,725 INFO Sent message: How do you feel about universal healthcare, on a scale of 0 to 10, where 0 represents strong opposition and 10 indicates strong support?
+2024-05-17 00:23:07,986 INFO User input: 0
+2024-05-17 00:23:09,734 INFO Sent message: Can you share more about what led you to choose that number? What life experiences or beliefs have influenced your views on universal healthcare?
+2024-05-17 00:24:32,605 INFO User input: shitballs
+2024-05-17 00:24:32,607 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 00:24:32,607 INFO Sent message: 
+2024-05-17 00:24:33,766 INFO Sent message: I'm here to help guide you through your thoughts on universal healthcare. What specific concerns or reasons led you to say "shitballs" in response to the topic?

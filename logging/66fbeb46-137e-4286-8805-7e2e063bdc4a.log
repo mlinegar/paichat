@@ -1,0 +1,29 @@
+2024-05-19 17:14:48,232 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-19 17:14:50,021 INFO User input: Tim
+2024-05-19 17:14:51,668 INFO Sent message: On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?
+2024-05-19 17:14:55,351 INFO User input: 9
+2024-05-19 17:14:56,483 INFO Sent message: Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?
+2024-05-19 17:15:00,721 INFO User input: I'd rather not
+2024-05-19 17:15:03,161 INFO Sent message: Some people believe that universal healthcare should include undocumented immigrants. On the same 0-10 scale, how do you feel about a universal healthcare system that covers everyone, regardless of immigration status?
+2024-05-19 17:15:05,219 INFO User input: 44
+2024-05-19 17:15:06,622 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-19 17:15:06,623 INFO Sent message: 
+2024-05-19 17:15:07,453 INFO Sent message: Some people believe that universal healthcare should include undocumented immigrants. On the same 0-10 scale, how do you feel about a universal healthcare system that covers everyone, regardless of immigration status?
+2024-05-19 17:15:07,456 INFO Errors: 1
+2024-05-19 17:15:10,908 INFO User input: 4
+2024-05-19 17:15:12,196 INFO Sent message: What thoughts or concerns come to mind when you consider including undocumented immigrants in a universal healthcare system?
+2024-05-19 17:15:24,598 INFO User input: it'll make healthcare more expensive
+2024-05-19 17:15:25,886 INFO Sent message: How do you think including or excluding undocumented immigrants from a universal healthcare system might impact our communities as a whole?
+2024-05-19 17:15:38,386 INFO User input: see what I just said
+2024-05-19 17:15:39,484 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-19 17:15:39,486 INFO Sent message: 
+2024-05-19 17:15:40,989 INFO Sent message: I understand your concern about healthcare becoming more expensive. How do you think including or excluding undocumented immigrants from a universal healthcare system might impact our communities as a whole?
+2024-05-19 17:15:40,991 INFO Errors: 2
+2024-05-19 17:16:20,990 INFO User input: make everyone sicker i guess
+2024-05-19 17:16:25,947 INFO Sent message: I’d like to share a story about a man named Carlos. Carlos came to the United States from Guatemala, fleeing violence and seeking a better life for his family. He found work in construction, often taking on the toughest and most dangerous jobs simply because he didn’t have many other options. Despite working tirelessly, Carlos struggled with several health issues, including chronic back pain and high blood pressure.
+
+Because of his undocumented status, Carlos was afraid to seek medical help. He worried that going to a doctor might expose him to the risk of deportation, which could tear him away from his family and leave them without support. Additionally, the cost of medical care was prohibitive. Without insurance, even a basic check-up was a significant financial burden.
+
+Carlos's health issues worsened over time. His back pain became debilitating, and his high blood pressure remained unmanaged. Eventually, he had to stop working, which put his family in a precarious financial situation. The stress and anxiety of his health and legal status weighed heavily on him and his loved ones.
+
+If there had been a universal healthcare system that included undocumented immigrants, Carlos’s life could have been very different. He could have accessed regular medical check-ups and treatment without fear of deportation or financial ruin. With proper care, his health

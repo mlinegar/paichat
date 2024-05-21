@@ -4,6 +4,7 @@ from lmql.runtime.output_writer import BaseOutputWriter
 class ChatMessageOutputWriter(BaseOutputWriter):
     """
     An output writer with additional methods to stream messages annotated as @lmql.lib.chat.message.
+    Replacing with: chat.output.ChatMessageOutputWriter
 
     See also `lmql.lib.chat.MessageDecorator`.
     """
@@ -20,6 +21,7 @@ class MessageDecorator(lmql.decorators.LMQLDecorator):
     """
     Provides an @message variable decorator in queries, allowing them
     to specify what output variables are shown to the user (streamed as chat messages).
+    Replacing with: chat.output.MessageDecorator
 
     To be used in conjunction with a `lmql.lib.chat.ChatMessageOutputWriter` output writer.
     """

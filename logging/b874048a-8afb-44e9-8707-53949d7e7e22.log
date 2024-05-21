@@ -1,0 +1,20 @@
+2024-05-17 17:25:40,865 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-17 17:25:44,025 INFO User input: I'm Tim
+2024-05-17 17:25:45,165 INFO Sent message: 
+2024-05-17 17:25:45,167 INFO Sent message: On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?
+2024-05-17 17:27:08,193 INFO User input: 2
+2024-05-17 17:27:09,706 INFO Sent message: Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?
+2024-05-17 17:27:14,643 INFO User input: I'd rather not
+2024-05-17 17:27:15,867 INFO Sent message: 
+2024-05-17 17:27:15,869 INFO Sent message: Some people believe that universal healthcare should include undocumented immigrants. On the same 0-10 scale, how do you feel about a universal healthcare system that covers everyone, regardless of immigration status?
+2024-05-17 17:27:24,483 INFO User input: 6
+2024-05-17 17:27:25,634 INFO Sent message: What thoughts or concerns come to mind when you consider including undocumented immigrants in a universal healthcare system?
+2024-05-17 20:10:20,059 INFO User input: that they take up resources, stealing them
+2024-05-17 20:10:22,195 INFO Sent message: How do you think including or excluding undocumented immigrants from a universal healthcare system might impact our communities as a whole?
+2024-05-17 20:10:41,723 INFO User input: I don't really care
+2024-05-17 20:10:43,277 INFO Sent message: 
+2024-05-17 20:10:44,127 INFO Sent message: Could you share a personal story about your connection to immigration, highlighting the human impact and the challenges that immigrants often encounter?
+2024-05-17 20:10:50,035 INFO User input: nah
+2024-05-17 20:10:52,466 INFO Sent message: Have you or someone you know gone through the process of immigrating to the United States? If you're comfortable, could you share their story or how it has influenced your view on immigration?
+2024-05-17 20:10:58,828 INFO User input: I'm not comfortable
+2024-05-17 20:11:01,262 INFO Sent message: If the voter shared a story, ask, "How has hearing or experiencing that story shaped your perspective on the challenges immigrants encounter?"

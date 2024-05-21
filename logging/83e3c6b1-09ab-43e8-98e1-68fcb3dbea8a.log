@@ -1,0 +1,14 @@
+2024-05-18 17:46:11,537 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-18 17:46:16,061 INFO User input: Tim
+2024-05-18 17:46:17,782 INFO Sent message: On a scale of 0 to 10, where 0 is strongly against and 10 is strongly in favor, how do you feel about universal healthcare?
+2024-05-18 17:46:21,904 INFO User input: 8
+2024-05-18 17:46:22,958 INFO Sent message: Can you tell me more about why you chose that number? What experiences or beliefs have shaped your perspective on universal healthcare?
+2024-05-18 17:46:26,984 INFO User input: I'd rather not
+2024-05-18 17:46:28,068 INFO Sent message: Some people believe that universal healthcare should include undocumented immigrants. On the same 0-10 scale, how do you feel about a universal healthcare system that covers everyone, regardless of immigration status?
+2024-05-18 17:46:31,466 INFO User input: 8
+2024-05-18 17:46:32,506 INFO Sent message: What thoughts or concerns come to mind when you consider including undocumented immigrants in a universal healthcare system?
+2024-05-18 17:48:00,083 INFO User input: I'd rather not share
+2024-05-18 17:48:01,111 INFO Sent message: How do you think including or excluding undocumented immigrants from a universal healthcare system might impact our communities as a whole?
+2024-05-18 17:48:07,007 INFO User input: I'd rather not share
+2024-05-18 17:48:10,700 INFO Sent message: I understand that sharing personal stories can be very sensitive. If you feel comfortable, could you share any experiences you or someone you know might have had related to immigration and accessing healthcare? For example, think about a person who came to the United States looking for better opportunities but faced significant hurdles because of their undocumented status. How do you think universal healthcare could have impacted their journey, providing necessary medical services without the fear of financial instability or deportation? Your insights can really help illustrate the human side of this issue.
+2024-05-18 17:48:11,569 INFO Sent message: Do you have any personal experiences with immigration or know someone who has immigrated to the United States? If so, would you feel comfortable sharing their story or how it has influenced your perspective on the issue?

@@ -1,0 +1,21 @@
+2024-05-17 00:40:10,988 INFO Sent message: Hi! I'm Brook, a volunteer canvasser. What's your name?
+2024-05-17 00:40:14,809 INFO User input: I'm Tim
+2024-05-17 00:40:15,757 INFO Sent message: 
+2024-05-17 00:40:16,621 INFO Sent message: How would you rate your support for universal healthcare on a scale from 0 to 10, where 0 means you are strongly against it and 10 means you are strongly in favor?
+2024-05-17 00:40:31,697 INFO User input: 1
+2024-05-17 00:40:33,854 INFO Sent message: Could you share some insights into why you chose that number? What experiences or beliefs have influenced your perspective on universal healthcare?
+2024-05-17 00:43:31,870 INFO User input: I'd rather not, that's private.
+2024-05-17 00:43:33,024 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 00:43:33,025 INFO Sent message: 
+2024-05-17 00:43:33,905 INFO Sent message: I understand your need for privacy. Is there a different way you'd feel comfortable sharing why you chose that number?
+2024-05-17 00:43:33,907 INFO Errors: 1
+2024-05-17 00:43:43,511 INFO User input: No.
+2024-05-17 00:43:44,156 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 00:43:44,157 INFO Sent message: 
+2024-05-17 00:43:45,052 INFO Sent message: Could you explain why you responded with "no"? What are your thoughts or experiences that have influenced your stance on universal healthcare?
+2024-05-17 00:43:45,053 INFO Errors: 2
+2024-05-17 00:43:50,872 INFO User input: No.
+2024-05-17 00:43:51,552 INFO Sent message: Your answer doesn't seem to address the question appropriately. Could you please try again?
+2024-05-17 00:43:51,554 INFO Sent message: 
+2024-05-17 00:43:53,343 INFO Sent message: I understand you said no, but could you please share more about the reasons behind your choice? What personal experiences or beliefs have influenced your view on universal healthcare?
+2024-05-17 00:43:53,344 INFO Errors: 3
