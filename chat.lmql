@@ -34,13 +34,14 @@ db = TinyDB(path, storage=CachingMiddleware(JSONStorage))
 
 ### SET OPTIONS ###
 small_model_name = 'openai/gpt-3.5-turbo'
-large_model_name = 'openai/gpt-4'
+large_model_name = 'openai/gpt-4-turbo'
+verbose=True
 small_model = lmql.model(small_model_name)
-large_model = lmql.model(large_model_name)
+large_model = lmql.model(large_model_name, chat_model=True)
 #  lmql.set_default_model('chatgpt')
 #  lmql.set_default_model('gpt-4')
-max_depth = 1
-script_name = "immigration_script"
+max_depth = 2
+script_name = "immigration_uhc_script"
 
 
 def append_to_database(db, data):
@@ -106,16 +107,16 @@ def log_messages(chat_logger, messages, level="info"):
         # Add more logging levels here as needed.
 
 
-        @lmql.query(chunksize=32)
-        @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
-        async def yes_no():
-            '''lmql
-            "Respond only with one of: 'Yes.' or 'No.'."
-            "A:[FLAG]" #where STOPS_AT(FLAG, '.') # FLAG in ['Yes.', 'No.'] and 
-            return "yes" in FLAG.lower()
-            '''
+@lmql.query(chunksize=32, verbose=verbose)
+@retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
+async def yes_no():
+    '''lmql
+    "Respond only with one of: 'Yes.' or 'No.'."
+    "A:[FLAG]" #where STOPS_AT(FLAG, '.') # FLAG in ['Yes.', 'No.'] and 
+    return "yes" in FLAG.lower()
+    '''
         
-@lmql.query
+@lmql.query(chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def chain_of_thought():
     '''lmql
@@ -126,14 +127,14 @@ async def chain_of_thought():
         
 # takes in and returns text
 # used with @message to print text to the user without needing to invoke LLM
-@lmql.query
+@lmql.query(chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def print_text(text):
     '''lmql
     "{text}"
     '''
 
-@lmql.query
+@lmql.query(chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def include(text):
     '''lmql
@@ -144,7 +145,7 @@ async def include(text):
     '''
 
 # FIXME: this is clumsy, and requires each tool individually to be added
-@lmql.query(model=large_model)
+@lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def use_tool(tool_name):
     '''lmql
@@ -160,7 +161,7 @@ async def use_tool(tool_name):
     return RESPONSE
     '''
 
-@lmql.query(model=large_model)
+@lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def ask_question(question_text, last_bot_response, user_response, verbatim, recalled_context="", max_length=256, tool_name=""):
     '''lmql
@@ -187,7 +188,7 @@ async def ask_question(question_text, last_bot_response, user_response, verbatim
     return QUESTION
     '''
 
-@lmql.query(model=small_model)
+@lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def did_user_answer(question_text, answer_text, prev_answer_text):
     '''lmql
@@ -197,12 +198,13 @@ async def did_user_answer(question_text, answer_text, prev_answer_text):
     "Reminder: the user may be responding from their phone, so their responses may be short or incomplete. You should accept most user responses that are even vaguely relevant to the question."
     "We need to answer the following question:"
     "Has the user answered the question, either in this response or a previous one?"
+    "Keep in mind: if the question asked for a numeric response like a number between 0-10, the user must give a number. A response that does not contain a number does not count as an answer."
     "[COT: chain_of_thought]"
-    "Has the user answered the question?[ANSWERED: yes_no]"
+    "Has the user answered the question? If the question asked for a numeric response, did the response contain a number?[ANSWERED: yes_no]"
     return ANSWERED
     '''
 
-@lmql.query(model=small_model)
+@lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def get_user_answer(question_text, answer_text, prev_answer_text):
     '''lmql
@@ -218,7 +220,7 @@ async def get_user_answer(question_text, answer_text, prev_answer_text):
     return ANSWER
     '''
 
-@lmql.query(model=small_model)
+@lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def assistant_response_needed(question_text, answer_text, prev_answer_text):
     '''lmql
@@ -249,9 +251,9 @@ async def execute_response_analysis(question_text, answer_text, prev_answer_text
     user_answer_ANS = await user_answer_task
     assistant_response_needed_ANS = await assistant_response_needed_task
 
-    return True, user_answer_ANS, assistant_response_needed_ANS
+    return user_answered_ANS, user_answer_ANS, assistant_response_needed_ANS
 
-@lmql.query(model=small_model)
+@lmql.query(model=small_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def gen_flag(flag_text):
     '''lmql
@@ -261,7 +263,7 @@ async def gen_flag(flag_text):
     return ANS
     '''
 
-@lmql.query(model=large_model)
+@lmql.query(model=large_model,chunksize=300, verbose=verbose)
 @retry(wait=wait_random_exponential(min=0.1, max=6), stop=stop_after_attempt(6))
 async def question_followup(question, user_input, errors, tries, max_depth):
     '''lmql
@@ -294,7 +296,7 @@ async def question_followup(question, user_input, errors, tries, max_depth):
 # this way can more explicitly guide the bot via programmatic script as well as system prompt
 # e.g. directly read in the script description from the replication materials as part of the system prompt
 
-argmax(chunksize=128)
+argmax(chunksize=300, verbose=verbose)
 "{:system} {system_prompt}"
 #  "{:assistant} {intro_text} [@message INTRO]"
 "{:assistant} Introduce yourself and then your topic to the user. Emphasize that you are here to learn about their experience. Do not ask the user any questions in this message.[@message INTRO]"
@@ -393,6 +395,7 @@ for i, step in enumerate(script):
             log_messages(chat_logger,
                             {"QUESTION_ANSWERED" : QUESTION_ANSWERED,
                             "QUESTION_ANSWER" : QUESTION_ANSWER,
+                            #  "QUESTION_ANSWER_COT" : QUESTION_ANSWER_COT,
                             "ASSISTANT_RESPONSE_NEEDED" : ASSISTANT_RESPONSE_NEEDED})
 
             append_to_database(db,{
