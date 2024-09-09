@@ -88,7 +88,7 @@ class WebSocketExecutor:
             await self.send_message(question_text, complete=True)
         else:
             full_chat_history = self.chat_history + [
-                {"role": "user", "content": f"Make absolutely no reference to this message other than to follow its instructions. Phrase your response as a direct response to what I just said. Make sure I have answered this question: {question_text}.{direction}"}
+                {"role": "user", "content": f"Make absolutely no reference to this message other than to follow its instructions. Phrase your response as a direct response to what I (the user) just said. Make sure I (the user) have answered this question: {question_text}.{direction}"}
             ]
 
             response_text = ""
@@ -168,7 +168,7 @@ class WebSocketExecutor:
             if user_answered:
                 await self.ask_question(current_question, direction=f"Respond to the user's message.")
             else: 
-                await self.ask_question(current_question, direction=f"Respond to the user's message, making sure that question: '{question_text}' is gets asked, and explaining why the user's last message was rejected (the reasoning was: {reasoning}).")
+                await self.ask_question(current_question, direction=f"Respond to the user's message, making sure that question: '{question_text}' gets asked, and explaining why the user's last message was rejected (the reasoning was: {reasoning}).")
 
             self.errors += 1
             log_messages(chat_logger, {"Errors": self.errors})

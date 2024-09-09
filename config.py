@@ -11,7 +11,7 @@ system_prompt = "You are a helpful assistant."
 error_message = ""
 initial_message = "Hi! I'm Brook, a volunteer canvasser. What's your name?"
 # small_model = "gpt-3.5-turbo"
-small_model = "gpt-4o"
+small_model = "gpt-4o-mini"
 large_model = "gpt-4o"
 max_tokens = 1500
 # Load script
