@@ -4,9 +4,64 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAI Chat V0.2</title>
+    <title>PAI Chat V0.8</title>
     <link rel="stylesheet" href="chat_assets/index.css">
     <script>
+    let userMessageCount = 0;
+    let ws;
+
+    function focusTextInput() {
+        const textInput = document.querySelector('.input textarea');
+        if (textInput) {
+            textInput.focus();
+        }
+    }
+
+    function updateStopButton() {
+        const stopButton = document.getElementById('stop-chat');
+        if (userMessageCount >= 3) {
+            stopButton.classList.remove('disabled');
+        } else {
+            stopButton.classList.add('disabled');
+        }
+        console.log(`Stop button state updated. Message count: ${userMessageCount}`);
+    }
+
+    function handleStopChat() {
+        console.log(`Handling stop chat. User message count: ${userMessageCount}`);
+        if (userMessageCount >= 3) {
+            const confirmStop = confirm("This will end your chat session. This action cannot be undone. Are you sure?");
+            if (confirmStop) {
+                stopChat();
+            }
+            // If user clicks 'Cancel', nothing happens and the chat continues
+        } else {
+            alert("Please send at least 3 messages before stopping the chat.");
+        }
+    }
+
+    function stopChat() {
+        console.log('Stopping chat');
+        // Close the WebSocket connection
+        if (window.ws && window.ws.readyState === WebSocket.OPEN) {
+            window.ws.close();
+        }
+        
+        // Redirect to a new page
+        window.location.href = 'chat_assets/survey-complete.html';
+    }
+
+    // Function to increment message count
+    function incrementMessageCount() {
+        userMessageCount++;
+        console.log(`User message count: ${userMessageCount}`);
+        updateStopButton();
+    }
+
+    // Make sure to call updateStopButton when the page loads
+    window.onload = function() {
+        updateStopButton();
+    };
     function addMessage(message, type, id = null) {
         if (message.trim() === '') {
             return;
@@ -106,6 +161,10 @@
         setThinking(true);
         document.querySelector('.input textarea').disabled = true;
         send(message);
+        // Increment message count and update stop button
+        userMessageCount++;
+        console.log(`User message count: ${userMessageCount}`);
+        updateStopButton();
     }
 
     let messageId = 0;
@@ -128,6 +187,7 @@
                     document.querySelector('.input textarea').disabled = false;
                     setThinking(false);
                     console.log('Response complete');
+                    focusTextInput();
                 }
             }
         }
@@ -138,13 +198,15 @@
                 type: 'init'
             }));
             setThinking(false);
+            focusTextInput();
         }
 
         websocket.onclose = function(event) {
             document.getElementById('connection-status').innerText = 'Disconnected';
         }
 
-        document.querySelector('.input textarea').focus();
+        // document.querySelector('.input textarea').focus();
+        focusTextInput();
     }
 
     function send(question) {
@@ -163,30 +225,105 @@
         document.querySelector('.input textarea').focus();
     }
 
+    // let isReportOpen = false;
+
+    // function reportProblem() {
+    //     if (isReportOpen) {
+    //         const popup = document.querySelector('.popup');
+    //         if (popup) {
+    //             document.body.removeChild(popup);
+    //             isReportOpen = false;
+    //         }
+    //     } else {
+    //         const popup = document.createElement('div');
+    //         popup.classList.add('popup');
+    //         popup.innerHTML = `
+    //             <textarea id="problem-description" placeholder="Describe the problem..."></textarea>
+    //             <button id="save-problem">Save</button>
+    //             <button id="cancel-problem">Cancel</button>
+    //         `;
+    //         document.body.appendChild(popup);
+    //         isReportOpen = true;
+
+    //         document.getElementById('save-problem').onclick = function() {
+    //             const description = document.getElementById('problem-description').value;
+
+    //             fetch('/submit-problem', {
+    //                 method: 'POST',
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 },
+    //                 body: JSON.stringify({ description: description })
+    //             })
+    //             .then(response => {
+    //                 if (response.ok) {
+    //                     console.log('Problem report submitted successfully');
+    //                 } else {
+    //                     console.error('Failed to submit problem report');
+    //                     console.error('Response status:', response.status);
+    //                     console.error('Response text:', response.statusText);
+    //                 }
+    //                 document.body.removeChild(popup);
+    //                 isReportOpen = false;
+    //             })
+    //             .catch(error => {
+    //                 console.error('Error submitting problem report:', error);
+    //                 document.body.removeChild(popup);
+    //                 isReportOpen = false;
+    //             });
+    //         };
+
+    //         document.getElementById('cancel-problem').onclick = function() {
+    //             document.body.removeChild(popup);
+    //             isReportOpen = false;
+    //         };
+    //     }
+    // }
+    
     let isReportOpen = false;
 
     function reportProblem() {
+        console.log("reportProblem function called");
+        console.log("isReportOpen:", isReportOpen);
+
         if (isReportOpen) {
+            console.log("Attempting to close existing popup");
             const popup = document.querySelector('.popup');
             if (popup) {
                 document.body.removeChild(popup);
                 isReportOpen = false;
+                console.log("Existing popup closed");
+            } else {
+                console.log("No existing popup found");
             }
         } else {
+            console.log("Creating new popup");
             const popup = document.createElement('div');
             popup.classList.add('popup');
+            popup.style.display = 'block'; // Ensure the popup is visible
+            popup.style.position = 'fixed';
+            popup.style.left = '50%';
+            popup.style.top = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.backgroundColor = 'white';
+            popup.style.padding = '20px';
+            popup.style.border = '1px solid black';
+            popup.style.zIndex = '1000';
+            
             popup.innerHTML = `
-                <textarea id="problem-description" placeholder="Describe the problem..."></textarea>
+                <textarea id="problem-description" placeholder="Describe the problem..." style="width: 100%; height: 100px;"></textarea>
                 <button id="save-problem">Save</button>
                 <button id="cancel-problem">Cancel</button>
             `;
             document.body.appendChild(popup);
             isReportOpen = true;
+            console.log("New popup created and appended to body");
 
             document.getElementById('save-problem').onclick = function() {
+                console.log("Save button clicked");
                 const description = document.getElementById('problem-description').value;
 
-                fetch('/submit-problem', {
+                fetch(`http://${window.location.host}/submit-problem`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -195,29 +332,66 @@
                 })
                 .then(response => {
                     if (response.ok) {
+                        alert('Problem report submitted successfully');
                         console.log('Problem report submitted successfully');
                     } else {
+                        alert('Failed to submit problem report');
                         console.error('Failed to submit problem report');
                         console.error('Response status:', response.status);
                         console.error('Response text:', response.statusText);
                     }
                     document.body.removeChild(popup);
                     isReportOpen = false;
+                    console.log("Popup closed after submission attempt");
                 })
                 .catch(error => {
+                    alert('Error submitting problem report');
                     console.error('Error submitting problem report:', error);
                     document.body.removeChild(popup);
                     isReportOpen = false;
+                    console.log("Popup closed after submission error");
                 });
             };
 
             document.getElementById('cancel-problem').onclick = function() {
+                console.log("Cancel button clicked");
                 document.body.removeChild(popup);
                 isReportOpen = false;
+                console.log("Popup closed by cancel button");
             };
         }
     }
+
     </script>
+       <style>
+        
+        /* Styles for the popup */
+        .popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        
+        /* Dark mode styles for the popup */
+        @media (prefers-color-scheme: dark) {
+            .popup {
+                background-color: #333;
+                color: #fff;
+            }
+        }
+
+        #stop-chat.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <div class="content">
@@ -226,13 +400,14 @@
                 <div class="title-container">
                     <img src="chat_assets/caltech.svg" alt="Caltech Logo" />
                     <div>
-                        <h1>PAI Chat V0.4</h1>
+                        <h1>PAI Chat V0.8</h1>
                         <h2 id="connection-status"></h2>
                     </div>
                 </div>
                 <div class="button-container">
                     <button id="report-problem" onclick="reportProblem()">Give Feedback</button>
-                    <button id="toggle-side" onclick="document.querySelector('.content').classList.toggle('side-view')">View Internals</button>
+                    <button id="stop-chat" onclick="handleStopChat()">Stop Chat</button>
+                    <!-- <button id="toggle-side" onclick="document.querySelector('.content').classList.toggle('side-view')">View Internals</button> -->
                 </div>
             </div>
             <div class="chat"></div>
@@ -253,278 +428,3 @@
     </div>
 </body>
 </html>
-
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PAI Chat V0.2</title>
-    <link rel="stylesheet" href="chat_assets/index.css">
-    <script>
-    function addMessage(message, type, id = null) {
-        if (message.trim() === '') {
-            return;
-        }
-
-        const chat = document.querySelector('.chat');
-
-        let wasThinking = isThinking;
-        setThinking(false)
-
-        // Check if message already exists, then update it
-        if (id && document.querySelector(`.message#${id}`)) {
-            let existingMessage = document.querySelector(`.message#${id}`)
-            // Content 
-            let content = existingMessage.querySelector('.message-content');
-            // Check if scrolled to bottom
-            let isScrolledToBottom = chat.scrollHeight - chat.clientHeight <= chat.scrollTop + 1;
-
-            content.innerHTML = message;
-
-            if (isScrolledToBottom) {
-                chat.scrollTop = chat.scrollHeight;
-            }
-            return;
-        }
-
-        const messageElement = document.createElement('div');
-        messageElement.classList.add('message');
-        messageElement.classList.add(type);
-        messageElement.id = id;
-        const messageContent = document.createElement('div');
-        messageContent.classList.add('message-content');
-        messageContent.innerText = message;
-        messageElement.appendChild(messageContent);
-        chat.appendChild(messageElement);
-        chat.scrollTop = chat.scrollHeight;
-        if (wasThinking) {
-            setThinking(wasThinking);
-        }
-    }
-
-    function clickSend() {
-        const input = document.querySelector('.input textarea');
-        event.preventDefault();
-        sendMessage();
-    }
-
-    function chatKeyDown() {
-        const input = document.querySelector('.input textarea');
-        if (event.keyCode === 13 && !event.shiftKey) {
-            event.preventDefault();
-            sendMessage();
-        }
-    }
-
-    let isThinking = false;
-
-    function setThinking(state) {
-        if (!isThinking && state) {
-            isThinking = true;
-            addThinking();
-        } else if (isThinking && !state) {
-            isThinking = false;
-            removeThinking();
-        }
-    }
-
-    function addThinking() {
-        const chat = document.querySelector('.chat');
-        const thinking = document.createElement('div');
-        thinking.classList.add('thinking');
-        for (let i = 0; i < 3; i++) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            thinking.appendChild(bubble);
-        }
-        chat.appendChild(thinking);
-    }
-
-    function removeThinking() {
-        const chat = document.querySelector('.chat');
-        const thinking = document.querySelector('.thinking');
-        chat.removeChild(thinking);
-    }
-
-    function sendMessage() {
-        if (isThinking) {
-            return;
-        }
-        const input = document.querySelector('.input textarea');
-        if (input.value.trim() === '') {
-            return;
-        }
-        const message = input.value;
-        input.value = '';
-        addMessage(message, 'user');
-        setThinking(true);
-        document.querySelector('.input textarea').disabled = true;
-        send(message);
-    }
-
-    let messageId = 0;
-    let websocket = null;
-
-    window.onload = function() {
-        setThinking(true);
-
-        document.getElementById('connection-status').innerText = 'Connecting...';
-
-        host = window.location.host;
-        websocket = new WebSocket("ws://" + host + "/chat");
-        document.getElementById('address').innerText = websocket.url;
-
-        websocket.onmessage = function(event) {
-            const message = JSON.parse(event.data);
-            if (message.type === 'response') {
-                addMessage(message.data, 'assistant', "response-" + message.message_id);
-                if (message.complete) {
-                    document.querySelector('.input textarea').disabled = false;
-                    setThinking(false);
-                    console.log('Response complete');
-                }
-            }
-        }
-
-        websocket.onopen = function(event) {
-            document.getElementById('connection-status').innerText = 'Connected';
-            websocket.send(JSON.stringify({
-                type: 'init'
-            }));
-            setThinking(false);
-        }
-
-        websocket.onclose = function(event) {
-            document.getElementById('connection-status').innerText = 'Disconnected';
-        }
-
-        document.querySelector('.input textarea').focus();
-    }
-
-    function send(question) {
-        setThinking(true);
-        let id = messageId++;
-
-        websocket.send(JSON.stringify({
-            type: 'input',
-            text: question
-        }));
-    }
-
-    function addResponse(s, role, id = null) {
-        document.querySelector('.input textarea').disabled = false;
-        addMessage(s, role, id);
-        document.querySelector('.input textarea').focus();
-    }
-
-    let isReportOpen = false;
-
-    function reportProblem() {
-        if (isReportOpen) {
-            const popup = document.querySelector('.popup');
-            if (popup) {
-                document.body.removeChild(popup);
-                isReportOpen = false;
-            }
-        } else {
-            const popup = document.createElement('div');
-            popup.classList.add('popup');
-            popup.innerHTML = `
-                <textarea id="problem-description" placeholder="Describe the problem..."></textarea>
-                <button id="save-problem">Save</button>
-                <button id="cancel-problem">Cancel</button>
-            `;
-            document.body.appendChild(popup);
-            isReportOpen = true;
-
-            document.getElementById('save-problem').onclick = function() {
-                const description = document.getElementById('problem-description').value;
-
-                fetch('/submit-problem', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ description: description })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        console.log('Problem report submitted successfully');
-                    } else {
-                        console.error('Failed to submit problem report');
-                        console.error('Response status:', response.status);
-                        console.error('Response text:', response.statusText);
-                    }
-                    document.body.removeChild(popup);
-                    isReportOpen = false;
-                })
-                .catch(error => {
-                    console.error('Error submitting problem report:', error);
-                    document.body.removeChild(popup);
-                    isReportOpen = false;
-                });
-            };
-
-            document.getElementById('cancel-problem').onclick = function() {
-                document.body.removeChild(popup);
-                isReportOpen = false;
-            };
-        }
-    }
-    </script>
-</head>
-<body>
-    <div class="content">
-        <div class="front side">
-            <div class="toolbar">
-                <div class="title-container">
-                    <img src="chat_assets/caltech.svg" alt="Caltech Logo" />
-                    <div>
-                        <h1>PAI Chat V0.2</h1>
-                        <h2 id="connection-status"></h2>
-                    </div>
-                </div>
-                <div class="button-container">
-                    <button id="report-problem" onclick="reportProblem()">Give Feedback</button>
-                    <button id="toggle-side" onclick="document.querySelector('.content').classList.toggle('side-view')">View Internals</button>
-                </div>
-            </div>
-            <div class="chat"></div>
-            <div class="input">
-                <textarea onkeydown="chatKeyDown()"></textarea>
-                <button onclick="clickSend()">
-                    <img src="chat_assets/send.svg" />
-                </button>
-            </div>
-        </div>
-        <div class="back code side">
-            <div class="toolbar">
-                <h1>Internal Trace</h1>
-                <h2 id="address"></h2>
-            </div>
-            <div id="raw-prompt"></div>
-        </div>
-    </div>
-</body>
-</html> -->
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
-    <link rel="stylesheet" href="/chat_assets/index.css">
-</head>
-<body>
-    <div id="chat-container">
-        <div id="messages"></div>
-        <input type="text" id="user-input" placeholder="Type a message...">
-        <button id="send-button">Send</button>
-    </div>
-    <script src="/chat_assets/script.js"></script>
-</body>
-</html> -->

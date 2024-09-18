@@ -18,7 +18,7 @@ def format_prompt(messages, model_name):
     
 async def my_generate(messages, model="gpt-3.5-turbo", temperature=0.7, max_tokens=256, top_p=1.0, frequency_penalty=0.0, presence_penalty=0.0, schema=None, stream=False):
     formatted_messages = format_prompt(messages, model)
-    print(f"Formatted messages: {formatted_messages}")
+    # print(f"Formatted messages: {formatted_messages}")
 
     collected_text = ""
 
@@ -71,7 +71,7 @@ async def my_generate(messages, model="gpt-3.5-turbo", temperature=0.7, max_toke
                 collected_text = "Sorry, I encountered an error while processing your request."
         
         final_output = collected_text.strip()
-        print(f"Final output: {final_output}")
+        # print(f"Final output: {final_output}")
         yield final_output
 
     except Exception as e:

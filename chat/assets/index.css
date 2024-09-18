@@ -587,3 +587,33 @@ pre, #raw-prompt {
         background-color: #444;
     }
 }
+
+
+#stop-chat {
+    margin-right: 10px;
+    padding: 8px 10px;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    min-width: 40px;
+}
+
+/* Dark mode stop button */
+@media (prefers-color-scheme: dark) {
+    #stop-chat {
+        background-color: #333;
+    }
+}
+
+#stop-chat:hover {
+    background-color: #e0e0e0;
+}
+
+/* Dark mode stop button hover */
+@media (prefers-color-scheme: dark) {
+    #stop-chat:hover {
+        background-color: #444;
+    }
+}

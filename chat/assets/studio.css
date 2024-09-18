@@ -443,3 +443,21 @@ button#run {
     padding: 5pt;
     border-radius: 5pt;
 }
+
+.survey-link {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.survey-link a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.survey-link a:hover {
+    background-color: #45a049;
+}

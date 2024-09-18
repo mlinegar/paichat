@@ -13,3 +13,13 @@ def assets(request):
         return web.Response(text='not found', status=404)
     path = path.replace('chat_assets/', PROJECT_DIR + '/chat/assets/')
     return web.FileResponse(path)
+
+# def assets(request):
+#     if request.method != 'GET':
+#         return web.Response(text='Method not allowed', status=405)
+    
+#     path = request.match_info.get('path', '')
+#     if not path.startswith('chat_assets/'):
+#         return web.Response(text='not found', status=404)
+#     path = path.replace('chat_assets/', PROJECT_DIR + '/chat/assets/')
+#     return web.FileResponse(path)
