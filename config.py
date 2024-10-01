@@ -2,14 +2,20 @@ import json
 import os
 
 max_depth = 2
-script_name = "non_citizen_voting_v4"
+script_name = "non_citizen_voting_v5"
 external_port = 20113
 internal_port = 8089
 host = '0.0.0.0'
 
+DB_NAME = 'chat_logs'
+DB_USER = 'tester'
+DB_PASSWORD = 'change_before_prod'
+DB_HOST = 'localhost'
+DB_PORT = '5432'
+
 # error_message = "Your answer doesn't seem to address the question appropriately. Could you please try again?"
 error_message = ""
-initial_message = "Hi! I'm Brook, a chatbot. I'd like to have a brief conversation with you about the coming election. This chat should take 8-10 minutes. At any time, you can stop the conversation by clicking the button in the top right corner of the chat. \n\nIs there a name you'd like me to call you?"
+initial_message = "Hi! I'm Brook, a chatbot. I'd like to have a brief conversation with you about the upcoming presidential election.\n\nThis chat should take 8-10 minutes. At any time, you can stop the conversation by clicking the button in the top right corner of the chat.\n\nI'm just a bot, so in order to continue our conversation I'll always need you to respond with something, even if it's short.\n\nIs there a name you'd like me to call you?"
 # small_model = "gpt-3.5-turbo"
 small_model = "gpt-4o-mini"
 large_model = "gpt-4o"
@@ -79,9 +85,13 @@ Personality and Interaction:
 - Be curious about the user's beliefs and experiences
 - Show sincerity in taking their concerns seriously
 - Avoid direct confrontation or saying "you are wrong"
-- If you disagree about facts the user references, instead of directly confronting them, use phrases like "That's interesting. My understanding is different..."
+- If you disagree about facts the user references, point out that you disagree in a cheerful way. When working with an article you are referencing that has false information, you might say 'I can see how that might sound convincing, but in fact...'
 - Be brief and to the point, focusing on relevant details
 - Encourage critical thinking without being preachy
+
+Information About Our Study:
+- Ethical: Has been approved by the Institutional Review Board (IRB) at Caltech and Washington University in St. Louis
+- Purpose: To understand how to effectively communicate with people about election integrity
 
 Responding to User Input:
 When the user provides input, follow these steps:
@@ -102,14 +112,15 @@ Maintaining Conversation Flow:
 Remember, your goal is not to win an argument, but to plant seeds of doubt about misinformation and encourage critical thinking about election integrity. Always maintain a respectful and curious tone.
 
 You are discussing the following election myth: {{MYTH}}
-Towards the end of your conversation, you will have the opportunity to share a version of the election myth that you have heard. This myth is contained in the following article:
+
+Towards the end of your conversation, you will have the opportunity to share a version of the election myth that you have heard.
 
 You will use this article both to inform your responses and to present the myth to the user for discussion. When discussing the myth, you should first introduce the allegations, then ask the user for their thoughts, and finally provide factual information to counter the misinformation.
 
 You will be given instructions like 'ASK' or 'RESPOND' to guide your conversation. These instructions will help you navigate the conversation effectively. If instructed with 'ASK', you must ask the user the question provided in order for the conversation to progress.
 For example, if instructed with 'ASK: What do you think about this?', your response must include, 'What do you think about this?'
 
-Throughout the conversation, always respond to the last thing the user said in a smooth and conversational manner. If the user's input is not directly related to the myth, you can acknowledge it briefly and then guide the conversation back to the election myth.
+Throughout the conversation, always respond to the last thing the user said in a smooth and conversational manner. If the user's input is not directly related to the myth, you can acknowledge it briefly and then guide the conversation back towards the election myth.
 """
 
 

@@ -13,8 +13,15 @@ from tenacity import retry, stop_after_attempt, wait_random_exponential
 from config import system_prompt, script, error_message, large_model, small_model, max_tokens, MYTH, MYTH_ARTICLE, FACT, FACT_ARTICLE
 from my_generate import my_generate
 
-# Set up OpenAI API key
-openai.api_key = os.getenv("OPENAI_API_KEY")
+# chat_logic.py
+from sqlalchemy.orm import Session
+from database import SessionLocal
+from models import ChatLog
+
+def log_to_database(db_session: Session, data):
+    db_log = ChatLog(**data)
+    db_session.add(db_log)
+    db_session.commit()
 
 # Setting up database and logger
 # Generate the date-time string
@@ -47,9 +54,9 @@ def log_messages(chat_logger, messages, level="info"):
             chat_logger.error(formatted_message)
 
 # Function to log data to the database
-def log_to_database(db, data):
-    db.insert(data)
-    db.storage.flush()  # force save
+# def log_to_database(db, data):
+#     db.insert(data)
+#     db.storage.flush()  # force save
 
 class WebSocketExecutor:
     def __init__(self, ws):
@@ -64,6 +71,12 @@ class WebSocketExecutor:
         self.flag = None
         self.username = str(uuid.uuid4())  # Generate a unique username for this session
         self.chat_log_path = self.get_chat_log_path()
+        self.db_session = SessionLocal()
+        self.current_question_id = None
+    
+    # Ensure to close the session when done
+    def __del__(self):
+        self.db_session.close()    
 
     # async def end_script(self):
     #     end_message = "Thank you for participating!"
@@ -96,24 +109,47 @@ class WebSocketExecutor:
 
         self.chat_history.append({"role": "assistant", "content": message})
         await self.save_message("assistant", message)
-        
         response_data = {
+            "message_id": message_id,
+            "role": "assistant",
+            "content": message,
+            "complete": complete,
+            "end_script": end_script,
+            "user_id": self.username,
+            "timestamp": datetime.now(),
+            "step_number": self.current_step,
+            "question_number": self.current_question,
+            "question_id": self.current_question_id,
+            "errors": self.errors,
+            "flag": self.flag
+        }
+
+        await self.ws.send_str(json.dumps({
             "type": "response",
             "data": message,
             "complete": complete,
             "message_id": message_id,
             "end_script": end_script
-        }
-
-        await self.ws.send_str(json.dumps(response_data))
+        }))
         log_messages(chat_logger, {"Sent message": message})
-        log_to_database(db, {
-            "message_id": message_id,
-            "role": "assistant",
-            "content": message,
-            "complete": complete,
-            "end_script": end_script
-        })
+        log_to_database(self.db_session, response_data)
+        # response_data = {
+        #     "type": "response",
+        #     "data": message,
+        #     "complete": complete,
+        #     "message_id": message_id,
+        #     "end_script": end_script
+        # }
+
+        # await self.ws.send_str(json.dumps(response_data))
+        # log_messages(chat_logger, {"Sent message": message})
+        # log_to_database(db, {
+        #     "message_id": message_id,
+        #     "role": "assistant",
+        #     "content": message,
+        #     "complete": complete,
+        #     "end_script": end_script
+        # })
     # async def send_message(self, message, complete=False, message_id=None, end_script=False):
     #     if message_id is None:
     #         self.message_id += 1
@@ -137,12 +173,40 @@ class WebSocketExecutor:
         print(f"Inner: Current question: {question}")
         print(f"Inner: Current flag: {self.flag}")
         print(f"Inner: Flag required for question: {question.get('flag_required')}")
+        print(f"Inner: Current number of errors: {self.errors}")
+        self.current_question_id = question.get('question_id', '') 
         if question.get('flag_required', False) and self.flag != question.get('flag_required'):
             print(f"Skipping question due to flag mismatch. Required: {question.get('flag_required')}, Current: {self.flag}")
             await self.send_message("", complete=True)
         question_text = question['question_text']
         if question['verbatim']:
-            await self.send_message(question_text, complete=True)
+            verbatim_message = question_text
+            # only truly verbatim if no errors
+            if self.errors == 0:
+                await self.send_message(verbatim_message, complete=True)
+            else:
+                full_chat_history = copy.copy(self.chat_history)
+                # note: direct copy of below
+                if not direction=="":
+                    directed_message = f"Make absolutely no reference to this message other than to follow its instructions in your next message. Phrase your response as a direct response to what I (the user) just said. Make sure I (the user) have answered this question: {verbatim_message}. Additionally, follow this direction: {direction}"
+                    full_chat_history.append({"role": "user", "content": directed_message})
+                else:
+                    question_message = f"Make absolutely no reference to this message other than to follow its instructions in your next message. Phrase your response as a direct response to what I (the user) just said. Make sure I (the user) have answered this question: {verbatim_message}."
+                    full_chat_history.append({"role": "user", "content": question_message})
+                # for testing
+                # print(f"Full chat history: {full_chat_history}")
+                response_text = ""
+                # stream=True
+                async for chunk in my_generate(full_chat_history, stream=False, model=large_model, max_tokens=max_tokens):
+                    if chunk:
+                        response_text += chunk
+                        await self.send_message(response_text.strip(), complete=False)
+                await self.send_message("", complete=True)
+            # verbatim_message = ''
+            # if self.errors > 0:
+            #     verbatim_message += "I'm sorry, your last response didn't seem to answer the question. Could you please try again? As a reminder, this was the question I asked you:\n\n"
+            # verbatim_message += question_text
+            # await self.send_message(verbatim_message, complete=True)
         else:
             full_chat_history = copy.copy(self.chat_history)
             if question.get('use_tool', False):
@@ -163,7 +227,8 @@ class WebSocketExecutor:
             # for testing
             # print(f"Full chat history: {full_chat_history}")
             response_text = ""
-            async for chunk in my_generate(full_chat_history, stream=True, model=large_model, max_tokens=max_tokens):
+            # stream=True
+            async for chunk in my_generate(full_chat_history, stream=False, model=large_model, max_tokens=max_tokens):
                 if chunk:
                     response_text += chunk
                     await self.send_message(response_text.strip(), complete=False)
@@ -188,11 +253,23 @@ class WebSocketExecutor:
         self.chat_history.append({"role": "user", "content": user_input})
         await self.save_message("user", user_input)
         log_messages(chat_logger, {"User input": user_input})
-        log_to_database(db, {
+        log_to_database(self.db_session, {
             "message_id": self.message_id,
             "role": "user",
-            "content": user_input
+            "content": user_input,
+            "user_id": self.username,
+            "timestamp": datetime.now(),
+            "step_number": self.current_step,
+            "question_number": self.current_question,
+            "question_id": self.current_question_id,
+            "errors": self.errors,
+            "flag": self.flag
         })
+        # log_to_database(db, {
+        #     "message_id": self.message_id,
+        #     "role": "user",
+        #     "content": user_input
+        # })
 
         current_question = self.script[self.current_step]['questions'][self.current_question]
         
@@ -222,8 +299,8 @@ class WebSocketExecutor:
             The only exception is if the user is asked a question that requires a numeric response.
             Given the question, user input, and previous responses, provide a JSON object with the following fields:
             - cot_reasoning: a brief chain-of-thought reasoning explaining your analysis
-            - user_answered: true if the user's input answers the question, false otherwise
-            - move_to_next_q: true if the user's input even attempted to answer the question, if they said they have not heard or do not know, if no follow-up question is needed, or in most cases, false otherwise, for example, if there seems to be a typo
+            - user_answered: true if the user's input attempts to answer any part of any question that was asked, false otherwise
+            - move_to_next_q: usually true. True if the user's input even attempted to answer any part of any question that was asked, if they said they have not heard or do not know, if no follow-up question is needed, or in most cases, false otherwise, for example, if there seems to be a typo, or if the user asks a followup question
             - user_answer: the user's answer extracted from their input
             - numeric_answer: if the question requires a numeric response, extract the number from the user's input
             - assistant_response_needed: true if the assistant should provide a response before moving to the next question
@@ -259,27 +336,39 @@ class WebSocketExecutor:
             user_answered = True
             reasoning = ""
             self.flag = None
+            self.errors = 0
         
         if (user_answered==False and current_question.get('requires_user_answer',False)==True) or not move_to_next_q:
+            self.errors += 1
             direction_addendum = ""
             if (user_answered==False and current_question.get('requires_user_answer',False)==True):
                 direction_addendum += "Tell the user their previous response didn't seem to answer the question. "
             if not move_to_next_q:
-                direction_addendum += "Apologize to the user, and say their response didn't seem to answer the question. Tell the user they need to try to answer the question before moving to the next part of the survey. "
+                direction_addendum += " Give a complete and coherent response to whatever the user just said. If the user's previous response contained a typo or seems in appropriate, apologize to the user, tell them why their response didn't seem to answer the question. Otherwise, respond to the user's message naturally, responding to what they said in the context of your conversation. Repeat yourself as little as possible, telling the user to refer to your last message if necessary. "
             if og_question_text=="":
                 og_question_addendum = ""
             else:
-                og_question_addendum = f" Remember, the original question that we actually want to get an answer to was: '{og_question_text}'."
-            direction = f"Respond to the user's message. {direction_addendum} If they have not already answered the question: '{question_text}', ask it again.{og_question_addendum} Explain why the user's last message was rejected (the reasoning was: {reasoning}). Guide the user to answer the important parts of the question with your response."
+                og_question_addendum = f" Remember, the original question that we actually want to get an answer to was: '{og_question_text}'. We expect the user to respond to that. Privately, we want to answer the question: '{question_text}', if the user has not already answered it."
+            direction = f"Respond to the user's message. {direction_addendum} , ask them to read your last message, then rephrase the key parts of the question itself and ask it again.{og_question_addendum} If necessary, explain why the user's last message was rejected (the reasoning was: {reasoning}). This said, do not repeat your last message, except where strictly necessary. Guide the user to answer the important parts of the question with your response. Respond to any and all questions or points of confusion they may have. Focus your response on the user's last message, and make sure to respond to it in a way that makes sense in the context of the conversation. Again, do not repeat your previous message except where absolutely necessary to ask a question."
             await self.ask_question(current_question, direction=direction)
-            self.errors += 1
             log_messages(chat_logger, {"Errors": self.errors})
-            log_to_database(db, {
+            log_to_database(self.db_session, {
                 "message_id": self.message_id,
                 "errors": self.errors,
-                "reasoning": reasoning
+                "reasoning": reasoning,
+                "user_id": self.username,
+                "timestamp": datetime.now(),
+                "step_number": self.current_step,
+                "question_number": self.current_question,
+                "flag": self.flag
             })
+            # log_to_database(db, {
+            #     "message_id": self.message_id,
+            #     "errors": self.errors,
+            #     "reasoning": reasoning
+            # })
         else:
+            self.errors = 0
             await self.move_to_next_question()
 
     async def move_to_next_question(self):
@@ -287,6 +376,7 @@ class WebSocketExecutor:
         if self.current_question >= len(self.script[self.current_step]['questions']):
             self.current_step += 1
             self.current_question = 0
+            self.errors = 0 # Reset errors at the end of each step
             self.flag = None  # Reset flag at the end of each step
             print(f"End of Step {self.current_step - 1}. Flag reset to None.")
 
@@ -300,11 +390,12 @@ class WebSocketExecutor:
             while self.current_step < len(self.script):
                 current_step = self.script[self.current_step]
                 questions = current_step['questions']
+                print(f"Step {current_step} of {len(questions)}")
 
                 while self.current_question < len(questions):
                     question = questions[self.current_question]
                     flag_required = question.get('flag_required')
-                    
+                    print(f"Outer: Question id: {question.get('question_id')}")
                     print(f"Outer: Current step: {self.current_step}, Current question: {self.current_question}")
                     print(f"Outer: Flag required for question: {flag_required}")
                     print(f"Outer: Current flag: {self.flag}")
@@ -323,6 +414,7 @@ class WebSocketExecutor:
                 self.current_step += 1
                 self.current_question = 0
                 self.flag = None
+                self.errors = 0
                 print(f"Moving to step {self.current_step}. Flag reset to None.")
             # If we've reached this point, we've completed all steps
             await self.end_script()

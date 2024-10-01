@@ -1,30 +1,15 @@
-# Use a base image with Conda installed
-FROM continuumio/miniconda3
+FROM python:3.12
 
-# Set the working directory in the container
 WORKDIR /app
 
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the Conda environment file
-COPY environment.yml /app/environment.yml
+COPY . .
 
-# Create the Conda environment
-RUN conda env create -f environment.yml
+ENV MAX_DEPTH=2
+ENV SCRIPT_NAME=non_citizen_voting_v6
+ENV INTERNAL_PORT=8089
+ENV HOST=0.0.0.0
 
-# Activate the environment
-SHELL ["conda", "run", "-n", ".paichat", "/bin/bash", "-c"]
-
-# Copy the current directory contents into the container at /app
-COPY . /app
-
-# Make port 18089 available to the world outside this container
-EXPOSE 18089
-
-CMD ["python", "test_server.py"]
-
-# Define environment variable
-ENV NAME World
-
-# Run lmql chat when the container launches
-# CMD ["conda", "run", "-n", ".paichat", "lmql", "chat", "chat.lmql"]
-CMD ["conda", "run", "-n", ".paichat", "python", "launch_chatserver.py"]
+CMD ["python", "launch_chatserver2.py"]
